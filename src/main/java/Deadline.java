@@ -1,9 +1,10 @@
 public class Deadline extends Task {
     protected String by;
 
-    public Deadline(String description, String by) {
+    public Deadline(String description, String by) throws KingException {
         super(description);
-        this.by = by;
+        if (by == null) { throw new KingException("Error! Deadline is not provided! Use the format `deadline [task] /by [date]`"); }
+        else {this.by = by;}
     }
 
     @Override

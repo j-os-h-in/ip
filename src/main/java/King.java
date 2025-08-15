@@ -16,12 +16,13 @@ public class King {
         ArrayList<Task> list = new ArrayList<>();
         String text = scanner.nextLine();
 
+        // Initialise regexes and matchers
         String listRegex = "^list$";
-        String todoRegex = "^todo\\s+(.+)$";
-        String deadlineRegex ="^deadline\\s+(.+?)\\s+/by\\s+(.+)$";
-        String eventRegex = "^event\\s+(.+?)\\s+/from\\s+(.+?)\\s+/to\\s+(.+)$";
-        String markRegex = "^mark\\s+(\\d+)$";
-        String unmarkRegex = "^unmark\\s+(\\d+)$";
+        String todoRegex = "^todo(?:\\s+(.*))?$";
+        String deadlineRegex ="^deadline(?:\\s+(.*?)\\s*(?:/by\\s+(.+))?)?$";
+        String eventRegex = "^event(?:\\s+(.*?)(?:\\s+/from\\s+(.+?))?(?:\\s+/to\\s+(.+))?)?$";
+        String markRegex = "^mark\\s*(\\d*)$";
+        String unmarkRegex = "^unmark\\s*(\\d*)$";
         String endRegex = "^bye$";
 
         Matcher listMatcher = Pattern.compile(listRegex).matcher(text);
@@ -83,6 +84,9 @@ public class King {
                 else {
                     System.out.println(spacer + " Error! Invalid command.");
                 }
+            }
+            catch (KingException e) {
+                System.out.println(spacer + e.getMessage());
             }
             catch (IndexOutOfBoundsException e) {
                 System.out.println(spacer + " Error! Task does not exist... ");
