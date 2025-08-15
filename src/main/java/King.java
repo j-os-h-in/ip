@@ -37,7 +37,7 @@ public class King {
             System.out.println(spacer + "____________________________________________________________");
             try {
                 if (listMatcher.matches()) {
-                    System.out.println(spacer + "Here are the tasks in your list:");
+                    System.out.println(spacer + " Here are the tasks in your list:");
                     for (int i = 1; i <= list.size(); i++) {
                         System.out.println(spacer + " " + i + ". " + list.get(i - 1));
                     }

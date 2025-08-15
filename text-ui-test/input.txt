@@ -1,0 +1,12 @@
+list
+todo buy grocery
+deadline return library book /by June 6th
+event project meeting /from Mon 2pm /to 4pm
+mark 1
+unmark 2
+mark 3
+list
+unmark 1
+list
+invalid command
+bye
