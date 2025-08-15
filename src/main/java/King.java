@@ -17,13 +17,14 @@ public class King {
         String text = scanner.nextLine();
 
         // Initialise regexes and matchers
-        String listRegex = "^list$";
-        String todoRegex = "^todo(?:\\s+(.*))?$";
-        String deadlineRegex ="^deadline(?:\\s+(.*?)\\s*(?:/by\\s+(.+))?)?$";
-        String eventRegex = "^event(?:\\s+(.*?)(?:\\s+/from\\s+(.+?))?(?:\\s+/to\\s+(.+))?)?$";
-        String markRegex = "^mark\\s*(\\d*)$";
-        String unmarkRegex = "^unmark\\s*(\\d*)$";
-        String endRegex = "^bye$";
+        String listRegex        = "^list$";
+        String todoRegex        = "^todo(?:\\s+(.*))?$";
+        String deadlineRegex    = "^deadline(?:\\s+(.*?)\\s*(?:/by\\s+(.+))?)?$";
+        String eventRegex       = "^event(?:\\s+(.*?)(?:\\s+/from\\s+(.+?))?(?:\\s+/to\\s+(.+))?)?$";
+        String markRegex        = "^mark(?:\\s+(\\d*))?$";
+        String unmarkRegex      = "^unmark(?:\\s+(\\d*))?$";
+        String deleteRegex      = "^delete(?:\\s+(\\d*))?$";
+        String endRegex         = "^bye$";
 
         Matcher listMatcher = Pattern.compile(listRegex).matcher(text);
         Matcher todoMatcher = Pattern.compile(todoRegex).matcher(text);
@@ -31,6 +32,7 @@ public class King {
         Matcher eventMatcher = Pattern.compile(eventRegex).matcher(text);
         Matcher markMatcher = Pattern.compile(markRegex).matcher(text);
         Matcher unmarkMatcher = Pattern.compile(unmarkRegex).matcher(text);
+        Matcher deleteMatcher = Pattern.compile(deleteRegex).matcher(text);
         Matcher endMatcher = Pattern.compile(endRegex).matcher(text);
 
         // Loop to get user input
@@ -42,18 +44,6 @@ public class King {
                     for (int i = 1; i <= list.size(); i++) {
                         System.out.println(spacer + " " + i + ". " + list.get(i - 1));
                     }
-                }
-                else if (markMatcher.matches()){
-                    int idx = Integer.parseInt(markMatcher.group(1));
-                    list.get(idx - 1).markDone();
-                    System.out.println(spacer + " NICE!! I've marked this task as done:");
-                    System.out.println(spacer + "   " + list.get(idx - 1));
-                }
-                else if (unmarkMatcher.matches()){
-                    int idx = Integer.parseInt(unmarkMatcher.group(1));
-                    list.get(idx - 1).unmarkDone();
-                    System.out.println(spacer + " OK :( I've marked this task as not done yet");
-                    System.out.println(spacer + "   " + list.get(idx - 1));
                 }
                 else if (todoMatcher.matches()){
                     list.add(new Todo(
@@ -81,6 +71,40 @@ public class King {
                     System.out.println(spacer + "   " + list.getLast());
                     System.out.println(spacer + " Now you have " + list.size() + " tasks in the list.");
                 }
+                else if (markMatcher.matches()){
+                    if (markMatcher.group(1) == null) {
+                        throw new KingException("Error! No mark index specified!");
+                    }
+                    else {
+                        int idx = Integer.parseInt(markMatcher.group(1));
+                        list.get(idx - 1).markDone();
+                        System.out.println(spacer + " NICE!! I've marked this task as done:");
+                        System.out.println(spacer + "   " + list.get(idx - 1));
+                    }
+                }
+                else if (unmarkMatcher.matches()){
+                    if (unmarkMatcher.group(1) == null) {
+                        throw new KingException("Error! No unmark index specified!");
+                    }
+                    else {
+                        int idx = Integer.parseInt(unmarkMatcher.group(1));
+                        list.get(idx - 1).unmarkDone();
+                        System.out.println(spacer + " OK :( I've marked this task as not done yet");
+                        System.out.println(spacer + "   " + list.get(idx - 1));
+                    }
+                }
+                else if (deleteMatcher.matches()){
+                    if (deleteMatcher.group(1) == null) {
+                        throw new KingException("Error! No delete index specified!");
+                    }
+                    else {
+                        int idx = Integer.parseInt(deleteMatcher.group(1));
+                        Task deletedTask = list.remove(idx - 1);
+                        System.out.println(spacer + " Noted! I've deleted this task:");
+                        System.out.println(spacer + "   " + deletedTask);
+                        System.out.println(spacer + " Now you have " + list.size() + " tasks in the list.");
+                    }
+                }
                 else {
                     System.out.println(spacer + " Error! Invalid command.");
                 }
@@ -100,6 +124,7 @@ public class King {
                 eventMatcher = Pattern.compile(eventRegex).matcher(text);
                 markMatcher = Pattern.compile(markRegex).matcher(text);
                 unmarkMatcher = Pattern.compile(unmarkRegex).matcher(text);
+                deleteMatcher = Pattern.compile(deleteRegex).matcher(text);
                 endMatcher = Pattern.compile(endRegex).matcher(text);
             }
         }
