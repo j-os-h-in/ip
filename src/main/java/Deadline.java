@@ -3,7 +3,7 @@ public class Deadline extends Task {
 
     public Deadline(String description, String by) throws KingException {
         super(description);
-        if (by == null) { throw new KingException("Error! Deadline is not provided! Use the format `deadline [task] /by [date]`"); }
+        if (by == null) { throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE); }
         else {this.by = by;}
     }
 

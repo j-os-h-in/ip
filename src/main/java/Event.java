@@ -5,9 +5,9 @@ public class Event extends Task {
     public Event(String description, String from, String to) throws KingException {
         super(description);
 
-        if (from == null && to == null) { throw new KingException("Error! From date and to date is missing!"); }
-        else if (from == null) { throw new KingException("Error! From date is missing!"); }
-        else if (to == null) { throw new KingException("Error! To date is missing!"); }
+        if (from == null && to == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_TO_DATE); }
+        else if (from == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_DATE); }
+        else if (to == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_TO_DATE); }
         else {
             this.from = from;
             this.to = to;

@@ -26,14 +26,14 @@ public class King {
         String deleteRegex      = "^delete(?:\\s+(\\d*))?$";
         String endRegex         = "^bye$";
 
-        Matcher listMatcher = Pattern.compile(listRegex).matcher(text);
-        Matcher todoMatcher = Pattern.compile(todoRegex).matcher(text);
+        Matcher listMatcher     = Pattern.compile(listRegex).matcher(text);
+        Matcher todoMatcher     = Pattern.compile(todoRegex).matcher(text);
         Matcher deadlineMatcher = Pattern.compile(deadlineRegex).matcher(text);
-        Matcher eventMatcher = Pattern.compile(eventRegex).matcher(text);
-        Matcher markMatcher = Pattern.compile(markRegex).matcher(text);
-        Matcher unmarkMatcher = Pattern.compile(unmarkRegex).matcher(text);
-        Matcher deleteMatcher = Pattern.compile(deleteRegex).matcher(text);
-        Matcher endMatcher = Pattern.compile(endRegex).matcher(text);
+        Matcher eventMatcher    = Pattern.compile(eventRegex).matcher(text);
+        Matcher markMatcher     = Pattern.compile(markRegex).matcher(text);
+        Matcher unmarkMatcher   = Pattern.compile(unmarkRegex).matcher(text);
+        Matcher deleteMatcher   = Pattern.compile(deleteRegex).matcher(text);
+        Matcher endMatcher      = Pattern.compile(endRegex).matcher(text);
 
         // Loop to get user input
         while (!endMatcher.matches()) {
@@ -73,7 +73,7 @@ public class King {
                 }
                 else if (markMatcher.matches()){
                     if (markMatcher.group(1) == null) {
-                        throw new KingException("Error! No mark index specified!");
+                        throw new KingException(KingException.ErrorMessage.MARK_MISSING_INDEX);
                     }
                     else {
                         int idx = Integer.parseInt(markMatcher.group(1));
@@ -84,7 +84,7 @@ public class King {
                 }
                 else if (unmarkMatcher.matches()){
                     if (unmarkMatcher.group(1) == null) {
-                        throw new KingException("Error! No unmark index specified!");
+                        throw new KingException(KingException.ErrorMessage.UNMARK_MISSING_INDEX);
                     }
                     else {
                         int idx = Integer.parseInt(unmarkMatcher.group(1));
@@ -95,7 +95,7 @@ public class King {
                 }
                 else if (deleteMatcher.matches()){
                     if (deleteMatcher.group(1) == null) {
-                        throw new KingException("Error! No delete index specified!");
+                        throw new KingException(KingException.ErrorMessage.DELETE_MISSING_INDEX);
                     }
                     else {
                         int idx = Integer.parseInt(deleteMatcher.group(1));
@@ -128,7 +128,6 @@ public class King {
                 endMatcher = Pattern.compile(endRegex).matcher(text);
             }
         }
-
         scanner.close();
         System.out.println(spacer + "____________________________________________________________");
         System.out.println(spacer + " BYE BYE!! Hope to see you again soon!");

@@ -1,10 +1,10 @@
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
 
     public Task(String description) throws KingException {
         if (description == null) {
-            throw new KingException("Error! Missing task description! Type it after todo/deadline/event.");
+            throw new KingException(KingException.ErrorMessage.MISSING_TASK_DESCRIPTION);
         }
         else {
             this.description = description;
