@@ -15,6 +15,11 @@ public class Event extends Task {
     }
 
     @Override
+    public String getType() {
+        return "EVENT";
+    }
+
+    @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
     }
