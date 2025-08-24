@@ -1,4 +1,0 @@
-aosijdoasjdasT | 1 | Hello World
-T | 0 | Task 1 | HEllo
-E | bruh
-T | 0 | 1
