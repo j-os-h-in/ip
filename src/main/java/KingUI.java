@@ -8,7 +8,7 @@ public class KingUI {
     public void showIntroduction() {
         showLine();
         System.out.println(spacer + "Hello! I'm King!");
-        System.out.println(spacer + "What can I do for you?");
+        System.out.println(spacer + "What can I do for you? Use `help` to view all my commands.");
         showLine();
     }
 
