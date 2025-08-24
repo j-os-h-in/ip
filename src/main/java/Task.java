@@ -12,8 +12,14 @@ public abstract class Task {
         }
     }
 
+    public abstract String getType();
+
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     public void markDone() {

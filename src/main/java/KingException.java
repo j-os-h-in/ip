@@ -12,7 +12,9 @@ public class KingException extends IOException {
         EVENT_MISSING_TO_DATE("Error! To date is missing! Use the format `event [task] /from [date] /to [date]`"),
         MARK_MISSING_INDEX("Error! No mark index specified!"),
         UNMARK_MISSING_INDEX("Error! No unmark index specified!"),
-        DELETE_MISSING_INDEX("Error! No delete index specified!");
+        DELETE_MISSING_INDEX("Error! No delete index specified!"),
+
+        INVALID_DATABASE("[KingStorage] Invalid data in database.");
 
         private final String message;
 

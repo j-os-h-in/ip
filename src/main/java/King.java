@@ -11,9 +11,13 @@ public class King {
         System.out.println(spacer + "What can I do for you?");
         System.out.println(spacer + "____________________________________________________________");
 
+        // Initialise database
+        KingStorage database = new KingStorage();
+        ArrayList<Task> list = database.loadFile();
+        if (list == null) list = new ArrayList<>();
+
         // Initialise input scanner
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> list = new ArrayList<>();
         String text = scanner.nextLine();
 
         // Initialise regexes and matchers
@@ -46,27 +50,25 @@ public class King {
                     }
                 }
                 else if (todoMatcher.matches()){
-                    list.add(new Todo(
-                            todoMatcher.group(1)
-                    ));
+                    Todo newTask = new Todo(todoMatcher.group(1));
+                    list.add(newTask);
+                    database.addToFile(newTask);
                     System.out.println(spacer + " Ok! I've added this todo:");
                     System.out.println(spacer + "   " + list.getLast());
                     System.out.println(spacer + " Now you have " + list.size() + " tasks in the list.");
                 }
                 else if (deadlineMatcher.matches()){
-                    list.add(new Deadline(
-                            deadlineMatcher.group(1),
-                            deadlineMatcher.group(2)));
+                    Deadline newTask = new Deadline(deadlineMatcher.group(1), deadlineMatcher.group(2));
+                    list.add(newTask);
+                    database.addToFile(newTask);
                     System.out.println(spacer + " Ok! I've added this deadline:");
                     System.out.println(spacer + "   " + list.getLast());
                     System.out.println(spacer + " Now you have " + list.size() + " tasks in the list.");
                 }
                 else if (eventMatcher.matches()){
-                    list.add(new Event(
-                            eventMatcher.group(1),
-                            eventMatcher.group(2),
-                            eventMatcher.group(3)
-                    ));
+                    Event newTask = new Event(eventMatcher.group(1), eventMatcher.group(2), eventMatcher.group(3));
+                    list.add(newTask);
+                    database.addToFile(newTask);
                     System.out.println(spacer + " Ok! I've added this event:");
                     System.out.println(spacer + "   " + list.getLast());
                     System.out.println(spacer + " Now you have " + list.size() + " tasks in the list.");
@@ -78,6 +80,7 @@ public class King {
                     else {
                         int idx = Integer.parseInt(markMatcher.group(1));
                         list.get(idx - 1).markDone();
+                        database.markDone(idx - 1);
                         System.out.println(spacer + " NICE!! I've marked this task as done:");
                         System.out.println(spacer + "   " + list.get(idx - 1));
                     }
@@ -89,6 +92,7 @@ public class King {
                     else {
                         int idx = Integer.parseInt(unmarkMatcher.group(1));
                         list.get(idx - 1).unmarkDone();
+                        database.unmarkDone(idx - 1);
                         System.out.println(spacer + " OK :( I've marked this task as not done yet");
                         System.out.println(spacer + "   " + list.get(idx - 1));
                     }
@@ -100,6 +104,7 @@ public class King {
                     else {
                         int idx = Integer.parseInt(deleteMatcher.group(1));
                         Task deletedTask = list.remove(idx - 1);
+                        database.remove(idx - 1);
                         System.out.println(spacer + " Noted! I've deleted this task:");
                         System.out.println(spacer + "   " + deletedTask);
                         System.out.println(spacer + " Now you have " + list.size() + " tasks in the list.");
