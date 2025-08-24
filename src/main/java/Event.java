@@ -1,8 +1,19 @@
-public class Event extends Task {
-    protected String from;
-    protected String to;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description, String from, String to) throws KingException {
+public class Event extends Task {
+    private LocalDate from;
+    private LocalDate to;
+
+    /**
+     * Instantiates an event based on the description and period of the task.
+     * If no start / end date is provided, throws a missing date exception.
+     * @param description Description of the task.
+     * @param from Start date of the event.
+     * @param to End date of the event.
+     * @throws KingException Error in creation of task.
+     */
+    public Event(String description, LocalDate from, LocalDate to) throws KingException {
         super(description);
 
         if (from == null && to == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_TO_DATE); }
@@ -14,21 +25,45 @@ public class Event extends Task {
         }
     }
 
-    public String getFrom() {
+    /**
+     * Returns the start date of the event.
+     * @return Start date.
+     */
+    public LocalDate getFrom() {
         return this.from;
     }
 
-    public String getTo() {
+    /**
+     * Returns the end date of the event.
+     * @return End date.
+     */
+    public LocalDate getTo() {
         return this.to;
     }
 
+    /**
+     * Sets the start date of the event.
+     * @param from Event start date.
+     */
+    public void setFrom(LocalDate from) {
+        this.from = from;
+    }
+
+    /**
+     * Sets the end date of the event.
+     * @param to Event end date.
+     */
+    public void setTo(LocalDate to) {
+        this.to = to;
+    }
+
     @Override
-    public String getType() {
-        return "EVENT";
+    public Type getType() {
+        return Type.EVENT;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return "[E]" + super.toString() + " (from: " + from.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + " to: " + to.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ")";
     }
 }

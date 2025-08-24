@@ -6,22 +6,29 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class KingStorage {
-    String databasePath = "data" + FileSystems.getDefault().getSeparator() + "king.txt";
-    File database = new File(databasePath);
+    private final String databasePath = "data" + FileSystems.getDefault().getSeparator() + "king.txt";
+    private final File database = new File(databasePath);
     private enum STORAGE_ACTIONS {
         MARK_DONE,
         UNMARK_DONE,
         DELETE_TASK
     }
 
+    /**
+     * Instantiates the database. If the database file has not been created, it creates the file.
+     */
     public KingStorage() {
         if (!database.exists()) createFile();
     }
 
+    /**
+     * Creates the database file.
+     */
     public void createFile() {
         try {
             // Create parent folders
@@ -40,22 +47,26 @@ public class KingStorage {
         }
     }
 
+    /**
+     * Adds a task to the database file.
+     * @param task Task to be added to the database.
+     */
     public void addToFile(Task task) {
         if (!database.exists()) createFile();
         try {
             FileWriter fw = new FileWriter(databasePath, true);
             switch(task.getType()) {
-            case "TODO":
+            case Task.Type.TODO:
                 Todo todo = (Todo) task;
-                fw.write("T | " + (todo.isDone ? 1 : 0) + " | " + todo.getDescription() + "\n");
+                fw.write("T | " + (todo.getComplete() ? 1 : 0) + " | " + todo.getDescription() + "\n");
                 break;
-            case "DEADLINE":
+            case Task.Type.DEADLINE:
                 Deadline deadline = (Deadline) task;
-                fw.write("D | " + (deadline.isDone ? 1 : 0) + " | " + deadline.getDescription() + " | " + deadline.getBy() + "\n");
+                fw.write("D | " + (deadline.getComplete() ? 1 : 0) + " | " + deadline.getDescription() + " | " + deadline.getBy() + "\n");
                 break;
-            case "EVENT":
+            case Task.Type.EVENT:
                 Event event = (Event) task;
-                fw.write("E | " + (event.isDone ? 1 : 0) + " | " + event.getDescription() + " | " + event.getFrom() + " | " + event.getTo() + "\n");
+                fw.write("E | " + (event.getComplete() ? 1 : 0) + " | " + event.getDescription() + " | " + event.getFrom() + " | " + event.getTo() + "\n");
                 break;
             }
             fw.close();
@@ -65,21 +76,37 @@ public class KingStorage {
         }
     }
 
+    /**
+     * Marks a task in the database file as complete.
+     * @param index Index of task to be marked complete.
+     */
     public void markDone(int index) {
         if (!database.exists()) createFile();
         replaceLine(index, STORAGE_ACTIONS.MARK_DONE);
     }
 
+    /**
+     * Marks a task in the database file as incomplete.
+     * @param index Index of task to be marked incomplete.
+     */
     public void unmarkDone(int index) {
         if (!database.exists()) createFile();
         replaceLine(index, STORAGE_ACTIONS.UNMARK_DONE);
     }
 
+    /**
+     * Removes a task in the database file.
+     * @param index Index of task to be removed.
+     */
     public void remove(int index) {
         if (!database.exists()) createFile();
         replaceLine(index, STORAGE_ACTIONS.DELETE_TASK);
     }
 
+    /**
+     * Loads the tasks in the database file into an ArrayList of Tasks.
+     * @return ArraysList of Tasks.
+     */
     public ArrayList<Task> loadFile() {
         if (!database.exists()) return null;
         try {
@@ -95,12 +122,12 @@ public class KingStorage {
                         tasks.add(newTodo);
                         break;
                     case "D":
-                        Deadline newDeadline = new Deadline(taskStrings[2], taskStrings[3]);
+                        Deadline newDeadline = new Deadline(taskStrings[2], LocalDate.parse(taskStrings[3]));
                         if (taskStrings[1].equals("1")) newDeadline.markDone();
                         tasks.add(newDeadline);
                         break;
                     case "E":
-                        Event newEvent = new Event(taskStrings[2], taskStrings[3], taskStrings[4]);
+                        Event newEvent = new Event(taskStrings[2], LocalDate.parse(taskStrings[3]), LocalDate.parse(taskStrings[4]));
                         if (taskStrings[1].equals("1")) newEvent.markDone();
                         tasks.add(newEvent);
                         break;
@@ -138,7 +165,11 @@ public class KingStorage {
         return null;
     }
 
-    // String Helpers
+    /**
+     * Helper function to replace line in the database file.
+     * @param row Row number of line to be edited / replaced.
+     * @param sa Action to be done on the line in the database file.
+     */
     private void replaceLine(int row, STORAGE_ACTIONS sa) {
         try {
             Path path = Paths.get(databasePath);
@@ -149,16 +180,18 @@ public class KingStorage {
                 switch(sa) {
                 case MARK_DONE:
                     taskStrings[1] = "1";
+                    allLines.set(row, String.join(" | ", taskStrings));
                     break;
                 case UNMARK_DONE:
                     taskStrings[1] = "0";
+                    allLines.set(row, String.join(" | ", taskStrings));
                     break;
                 case DELETE_TASK:
+                    System.out.println("Removing data from row " + row);
                     allLines.remove(row);
                 default:
                     break;
                 }
-                allLines.set(row, String.join(" | ", taskStrings));
             }
             Files.write(path, allLines);
         }

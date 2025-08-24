@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.*;
@@ -21,7 +24,9 @@ public class King {
         String text = scanner.nextLine();
 
         // Initialise regexes and matchers
+        String helpRegex        = "^help$";
         String listRegex        = "^list$";
+        String dueRegex         = "^due(?:\\s+(.*))?$";
         String todoRegex        = "^todo(?:\\s+(.*))?$";
         String deadlineRegex    = "^deadline(?:\\s+(.*?)\\s*(?:/by\\s+(.+))?)?$";
         String eventRegex       = "^event(?:\\s+(.*?)(?:\\s+/from\\s+(.+?))?(?:\\s+/to\\s+(.+))?)?$";
@@ -30,7 +35,9 @@ public class King {
         String deleteRegex      = "^delete(?:\\s+(\\d*))?$";
         String endRegex         = "^bye$";
 
+        Matcher helpMatcher     = Pattern.compile(helpRegex).matcher(text);
         Matcher listMatcher     = Pattern.compile(listRegex).matcher(text);
+        Matcher dueMatcher      = Pattern.compile(dueRegex).matcher(text);
         Matcher todoMatcher     = Pattern.compile(todoRegex).matcher(text);
         Matcher deadlineMatcher = Pattern.compile(deadlineRegex).matcher(text);
         Matcher eventMatcher    = Pattern.compile(eventRegex).matcher(text);
@@ -43,10 +50,41 @@ public class King {
         while (!endMatcher.matches()) {
             System.out.println(spacer + "____________________________________________________________");
             try {
-                if (listMatcher.matches()) {
+                // /help command - lists the possible commands you can give to the King bot
+                if (helpMatcher.matches()) {
+                    System.out.println(spacer + " Need help? Here is the list of commands you can use to use this chat bot!");
+                    System.out.println(spacer + " /list                                                  - Gets the list of tasks you currently have");
+                    System.out.println(spacer + " /due [YYYY-MM-DD]                                      - Gets tasks due on specific date");
+                    System.out.println(spacer + " /todo [task name]                                      - Creates a new todo task");
+                    System.out.println(spacer + " /deadline [task name] /by [YYYY-MM-DD]                 - Creates a new deadline task with a time to complete by");
+                    System.out.println(spacer + " /event [task name] /from [YYYY-MM-DD] /to [YYYY-MM-DD] - Creates a new event based on a period");
+                    System.out.println(spacer + " /mark [index]                                          - Marks the task at the index to be complete");
+                    System.out.println(spacer + " /unmark [index]                                        - Marks the task at the index to be incomplete");
+                    System.out.println(spacer + " /delete [index]                                        - Deletes the task at the index");
+                    System.out.println(spacer + " /bye                                                   - Ends the program");
+                    System.out.println(spacer + " /help                                                  - Provides the list of commands to query the bot");
+                }
+
+                // /list command - lists all the current tasks in your task list
+                else if (listMatcher.matches()) {
                     System.out.println(spacer + " Here are the tasks in your list:");
                     for (int i = 1; i <= list.size(); i++) {
                         System.out.println(spacer + " " + i + ". " + list.get(i - 1));
+                    }
+                }
+
+                // /due command - lists all tasks on a certain due date
+                else if (dueMatcher.matches()) {
+                    if (dueMatcher.group(1) == null) { throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE); }
+
+                    System.out.println(spacer + " Here are the tasks due on " + LocalDate.parse(dueMatcher.group(1)).format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ".");
+                    for (int i = 1; i <= list.size(); i++) {
+                        if (list.get(i - 1).getType() == Task.Type.DEADLINE) {
+                            Deadline deadlineTask = (Deadline) list.get(i - 1);
+                            if (deadlineTask.getBy().equals(LocalDate.parse(dueMatcher.group(1)))) {
+                                System.out.println(spacer + " " + i + ". " + list.get(i - 1));
+                            }
+                        }
                     }
                 }
                 else if (todoMatcher.matches()){
@@ -58,7 +96,9 @@ public class King {
                     System.out.println(spacer + " Now you have " + list.size() + " tasks in the list.");
                 }
                 else if (deadlineMatcher.matches()){
-                    Deadline newTask = new Deadline(deadlineMatcher.group(1), deadlineMatcher.group(2));
+                    if (deadlineMatcher.group(2) == null) { throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE); }
+
+                    Deadline newTask = new Deadline(deadlineMatcher.group(1), LocalDate.parse(deadlineMatcher.group(2)));
                     list.add(newTask);
                     database.addToFile(newTask);
                     System.out.println(spacer + " Ok! I've added this deadline:");
@@ -66,7 +106,11 @@ public class King {
                     System.out.println(spacer + " Now you have " + list.size() + " tasks in the list.");
                 }
                 else if (eventMatcher.matches()){
-                    Event newTask = new Event(eventMatcher.group(1), eventMatcher.group(2), eventMatcher.group(3));
+                    if (eventMatcher.group(2) == null && eventMatcher.group(3) == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_TO_DATE); }
+                    else if (eventMatcher.group(2) == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_DATE); }
+                    else if (eventMatcher.group(3) == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_TO_DATE); }
+
+                    Event newTask = new Event(eventMatcher.group(1), LocalDate.parse(eventMatcher.group(2)), LocalDate.parse(eventMatcher.group(3)));
                     list.add(newTask);
                     database.addToFile(newTask);
                     System.out.println(spacer + " Ok! I've added this event:");
@@ -120,17 +164,22 @@ public class King {
             catch (IndexOutOfBoundsException e) {
                 System.out.println(spacer + " Error! Task does not exist... ");
             }
+            catch (DateTimeParseException e) {
+                System.out.println(spacer + " Error! Date time format specified is incorrect. Use format YYYY-MM-DD");
+            }
             finally {
                 System.out.println(spacer + "____________________________________________________________");
                 text = scanner.nextLine().strip();
-                listMatcher = Pattern.compile(listRegex).matcher(text);
-                todoMatcher = Pattern.compile(todoRegex).matcher(text);
+                helpMatcher     = Pattern.compile(helpRegex).matcher(text);
+                listMatcher     = Pattern.compile(listRegex).matcher(text);
+                dueMatcher      = Pattern.compile(dueRegex).matcher(text);
+                todoMatcher     = Pattern.compile(todoRegex).matcher(text);
                 deadlineMatcher = Pattern.compile(deadlineRegex).matcher(text);
-                eventMatcher = Pattern.compile(eventRegex).matcher(text);
-                markMatcher = Pattern.compile(markRegex).matcher(text);
-                unmarkMatcher = Pattern.compile(unmarkRegex).matcher(text);
-                deleteMatcher = Pattern.compile(deleteRegex).matcher(text);
-                endMatcher = Pattern.compile(endRegex).matcher(text);
+                eventMatcher    = Pattern.compile(eventRegex).matcher(text);
+                markMatcher     = Pattern.compile(markRegex).matcher(text);
+                unmarkMatcher   = Pattern.compile(unmarkRegex).matcher(text);
+                deleteMatcher   = Pattern.compile(deleteRegex).matcher(text);
+                endMatcher      = Pattern.compile(endRegex).matcher(text);
             }
         }
         scanner.close();
