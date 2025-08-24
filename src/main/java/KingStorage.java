@@ -187,7 +187,6 @@ public class KingStorage {
                     allLines.set(row, String.join(" | ", taskStrings));
                     break;
                 case DELETE_TASK:
-                    System.out.println("Removing data from row " + row);
                     allLines.remove(row);
                 default:
                     break;
