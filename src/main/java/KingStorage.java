@@ -105,7 +105,7 @@ public class KingStorage {
                         tasks.add(newEvent);
                         break;
                     default:
-                        throw new KingException("[KingStorage] Invalid data in database.");
+                        throw new KingException(KingException.ErrorMessage.INVALID_DATABASE);
                 }
             }
             s.close();
