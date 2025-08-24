@@ -14,7 +14,7 @@ public abstract class Task {
      * @throws KingException Error in creation of task.
      */
     public Task(String description) throws KingException {
-        if (description == null) {
+        if (description == null || description.isEmpty()) {
             throw new KingException(KingException.ErrorMessage.MISSING_TASK_DESCRIPTION);
         }
         else {
