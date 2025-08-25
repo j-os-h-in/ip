@@ -1,3 +1,7 @@
+package king.task;
+
+import king.storage.KingStorage;
+
 import java.util.ArrayList;
 
 public class KingTaskList {

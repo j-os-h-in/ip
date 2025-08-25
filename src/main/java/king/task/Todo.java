@@ -1,3 +1,7 @@
+package king.task;
+
+import king.KingException;
+
 public class Todo extends Task {
     /**
      * Instantiates a todo task based on the description of the task.

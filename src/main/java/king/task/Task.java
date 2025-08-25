@@ -1,3 +1,7 @@
+package king.task;
+
+import king.KingException;
+
 public abstract class Task {
     private String description;
     private boolean complete;
@@ -25,7 +29,7 @@ public abstract class Task {
 
     /**
      * Returns the type of the task.
-     * @return Task type.
+     * @return king.task.Task type.
      */
     public abstract Type getType();
 

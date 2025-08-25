@@ -1,8 +1,15 @@
+package king;
+
+import king.parser.KingParser;
+import king.task.Deadline;
+import king.task.Event;
+import king.task.KingTaskList;
+import king.task.Todo;
+import king.ui.KingUI;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.*;
 
 public class King {
     public static void main(String[] args) {
@@ -16,14 +23,15 @@ public class King {
 
         // Initialise input scanner
         Scanner scanner = new Scanner(System.in);
-        String text = scanner.nextLine();
+        String text = scanner.nextLine().strip();
+        kingParser.setNewInput(text);
 
         // Loop to get user input
         try {
             while (!kingParser.checkParser(KingParser.Commands.BYE)) {
                 kingUI.showLine();
                 try {
-                    // help command - lists the possible commands you can give to the King bot
+                    // help command - lists the possible commands you can give to the king.King bot
                     if (kingParser.checkParser(KingParser.Commands.HELP)) {
                         kingUI.showHelp();
                     }

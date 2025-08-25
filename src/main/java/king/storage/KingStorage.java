@@ -1,3 +1,11 @@
+package king.storage;
+
+import king.KingException;
+import king.task.Deadline;
+import king.task.Event;
+import king.task.Task;
+import king.task.Todo;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -38,18 +46,18 @@ public class KingStorage {
 
             // Create database file
             if(!database.createNewFile()) {
-                System.out.println("[KingStorage] The database file already exists or could not be created.");
+                System.out.println("[king.storage.KingStorage] The database file already exists or could not be created.");
             }
         }
         catch (IOException ioe) {
-            System.out.println("[KingStorage] An error occurred when creating the database file: " + ioe);
-            System.out.println("[KingStorage] Your data is not saved.");
+            System.out.println("[king.storage.KingStorage] An error occurred when creating the database file: " + ioe);
+            System.out.println("[king.storage.KingStorage] Your data is not saved.");
         }
     }
 
     /**
      * Adds a task to the database file.
-     * @param task Task to be added to the database.
+     * @param task king.task.Task to be added to the database.
      */
     public void addToFile(Task task) {
         if (!database.exists()) createFile();
@@ -72,7 +80,7 @@ public class KingStorage {
             fw.close();
         }
         catch(IOException ioe) {
-            System.out.println("[KingStorage] Exception when adding task to file: " + ioe);
+            System.out.println("[king.storage.KingStorage] Exception when adding task to file: " + ioe);
         }
     }
 
@@ -149,18 +157,18 @@ public class KingStorage {
             if (text.equals("Y")) {
                 database.delete();
                 createFile();
-                System.out.println("[KingStorage] Database has been reset.");
+                System.out.println("[king.storage.KingStorage] Database has been reset.");
             }
             else {
-                System.out.println("[KingStorage] Operation cancelled. Your tasks created will not be saved.");
+                System.out.println("[king.storage.KingStorage] Operation cancelled. Your tasks created will not be saved.");
             }
 
         }
         catch (ArrayIndexOutOfBoundsException aie) {
-            System.out.println("[KingStorage] File may be corrupted: " + aie);
+            System.out.println("[king.storage.KingStorage] File may be corrupted: " + aie);
         }
         catch (FileNotFoundException fnfe) {
-            System.out.println("[KingStorage] File not found: " + fnfe);
+            System.out.println("[king.storage.KingStorage] File not found: " + fnfe);
         }
         return null;
     }

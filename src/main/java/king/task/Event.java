@@ -1,3 +1,7 @@
+package king.task;
+
+import king.KingException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -43,7 +47,7 @@ public class Event extends Task {
 
     /**
      * Sets the start date of the event.
-     * @param from Event start date.
+     * @param from king.task.Event start date.
      */
     public void setFrom(LocalDate from) {
         this.from = from;
@@ -51,7 +55,7 @@ public class Event extends Task {
 
     /**
      * Sets the end date of the event.
-     * @param to Event end date.
+     * @param to king.task.Event end date.
      */
     public void setTo(LocalDate to) {
         this.to = to;

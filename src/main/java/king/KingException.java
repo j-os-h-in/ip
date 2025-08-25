@@ -1,3 +1,5 @@
+package king;
+
 import java.io.IOException;
 
 public class KingException extends IOException {
@@ -5,7 +7,7 @@ public class KingException extends IOException {
         INVALID_COMMAND("Invalid command"),
         MISSING_TASK_DESCRIPTION("Error! Missing task description! Type it after todo/deadline/event."),
 
-        DEADLINE_MISSING_DEADLINE("Error! Deadline is not provided! Use the format `deadline [task] /by [date]`"),
+        DEADLINE_MISSING_DEADLINE("Error! king.task.Deadline is not provided! Use the format `deadline [task] /by [date]`"),
 
         EVENT_MISSING_FROM_TO_DATE("Error! From and to date is missing! Use the format `event [task] /from [date] /to [date]`"),
         EVENT_MISSING_FROM_DATE("Error! From date is missing! Use the format `event [task] /from [date] /to [date]`"),
@@ -14,7 +16,7 @@ public class KingException extends IOException {
         UNMARK_MISSING_INDEX("Error! No unmark index specified!"),
         DELETE_MISSING_INDEX("Error! No delete index specified!"),
 
-        INVALID_DATABASE("[KingStorage] Invalid data in database.");
+        INVALID_DATABASE("[king.storage.KingStorage] Invalid data in database.");
 
         private final String message;
 
