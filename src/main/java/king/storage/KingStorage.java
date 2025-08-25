@@ -37,7 +37,7 @@ public class KingStorage {
     /**
      * Creates the database file.
      */
-    public void createFile() {
+    private void createFile() {
         try {
             // Create parent folders
             if(database.getParentFile() != null && !database.getParentFile().exists()) {
@@ -46,12 +46,12 @@ public class KingStorage {
 
             // Create database file
             if(!database.createNewFile()) {
-                System.out.println("[king.storage.KingStorage] The database file already exists or could not be created.");
+                System.out.println("[KingStorage] The database file already exists or could not be created.");
             }
         }
         catch (IOException ioe) {
-            System.out.println("[king.storage.KingStorage] An error occurred when creating the database file: " + ioe);
-            System.out.println("[king.storage.KingStorage] Your data is not saved.");
+            System.out.println("[KingStorage] An error occurred when creating the database file: " + ioe);
+            System.out.println("[KingStorage] Your data is not saved.");
         }
     }
 
@@ -64,15 +64,15 @@ public class KingStorage {
         try {
             FileWriter fw = new FileWriter(databasePath, true);
             switch(task.getType()) {
-            case Task.Type.TODO:
+            case TODO:
                 Todo todo = (Todo) task;
                 fw.write("T | " + (todo.getComplete() ? 1 : 0) + " | " + todo.getDescription() + "\n");
                 break;
-            case Task.Type.DEADLINE:
+            case DEADLINE:
                 Deadline deadline = (Deadline) task;
                 fw.write("D | " + (deadline.getComplete() ? 1 : 0) + " | " + deadline.getDescription() + " | " + deadline.getBy() + "\n");
                 break;
-            case Task.Type.EVENT:
+            case EVENT:
                 Event event = (Event) task;
                 fw.write("E | " + (event.getComplete() ? 1 : 0) + " | " + event.getDescription() + " | " + event.getFrom() + " | " + event.getTo() + "\n");
                 break;
@@ -80,7 +80,7 @@ public class KingStorage {
             fw.close();
         }
         catch(IOException ioe) {
-            System.out.println("[king.storage.KingStorage] Exception when adding task to file: " + ioe);
+            System.out.println("[KingStorage] Exception when adding task to file: " + ioe);
         }
     }
 
@@ -155,22 +155,28 @@ public class KingStorage {
                 text = scanner.nextLine();
             }
             if (text.equals("Y")) {
-                database.delete();
-                createFile();
-                System.out.println("[king.storage.KingStorage] Database has been reset.");
+                resetFile();
             }
             else {
-                System.out.println("[king.storage.KingStorage] Operation cancelled. Your tasks created will not be saved.");
+                System.out.println("[KingStorage] Operation cancelled. Your tasks created will not be saved.");
             }
-
         }
         catch (ArrayIndexOutOfBoundsException aie) {
-            System.out.println("[king.storage.KingStorage] File may be corrupted: " + aie);
+            System.out.println("[KingStorage] File may be corrupted: " + aie);
         }
         catch (FileNotFoundException fnfe) {
-            System.out.println("[king.storage.KingStorage] File not found: " + fnfe);
+            System.out.println("[KingStorage] File not found: " + fnfe);
         }
         return null;
+    }
+
+    /**
+     * Resets the database file.
+     */
+    public void resetFile() {
+        database.delete();
+        createFile();
+        System.out.println("[KingStorage] Database has been reset.");
     }
 
     /**

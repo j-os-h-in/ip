@@ -32,6 +32,10 @@ public class KingParser {
 
     private String input;
 
+    public KingParser() {
+        this("");
+    }
+
     public KingParser(String input) {
         this.input = input;
         helpMatcher     = Pattern.compile(helpRegex).matcher(input);
@@ -47,6 +51,7 @@ public class KingParser {
     }
 
     public void setNewInput(String input) {
+        input = input.strip();
         this.input = input;
         helpMatcher     = Pattern.compile(helpRegex).matcher(input);
         listMatcher     = Pattern.compile(listRegex).matcher(input);

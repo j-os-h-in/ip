@@ -14,6 +14,11 @@ public class KingTaskList {
         else this.tasks = tasks;
     }
 
+    public KingTaskList(boolean reset) {
+        this();
+        if (reset) resetList();
+    }
+
     public ArrayList<Task> getTasks() {
         return tasks;
     }
@@ -41,6 +46,11 @@ public class KingTaskList {
         Task deletedTask = tasks.remove(idx);
         kingStorage.remove(idx);
         return deletedTask;
+    }
+
+    private void resetList() {
+        tasks.clear();
+        kingStorage.resetFile();
     }
 
     public int getSize() {
