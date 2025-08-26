@@ -8,6 +8,7 @@ import king.KingException;
 public abstract class Task {
     private String description;
     private boolean complete;
+
     public enum Type {
         TODO,
         DEADLINE,
@@ -17,14 +18,14 @@ public abstract class Task {
     /**
      * Instantiates a task based on the description.
      * If no description is provided, throws a missing description exception.
+     *
      * @param description Description of the task.
      * @throws KingException Error in creation of task.
      */
     public Task(String description) throws KingException {
         if (description == null || description.isEmpty()) {
             throw new KingException(KingException.ErrorMessage.MISSING_TASK_DESCRIPTION);
-        }
-        else {
+        } else {
             this.description = description;
             this.complete = false;
         }
@@ -32,12 +33,14 @@ public abstract class Task {
 
     /**
      * Returns the type of the task.
+     *
      * @return king.task.Task type.
      */
     public abstract Type getType();
 
     /**
      * Returns the description of the task.
+     *
      * @return Description of task.
      */
     public String getDescription() {
@@ -46,6 +49,7 @@ public abstract class Task {
 
     /**
      * Returns the completion status of the task.
+     *
      * @return If task is complete return true, else false.
      */
     public boolean getComplete() {
@@ -54,6 +58,7 @@ public abstract class Task {
 
     /**
      * Returns the completion status icon "X" of the task.
+     *
      * @return If task is complete return "X", else " ".
      */
     public String getStatusIcon() {
@@ -62,6 +67,7 @@ public abstract class Task {
 
     /**
      * Sets the description of the task.
+     *
      * @param description Description of task.
      */
     public void setDescription(String description) {
@@ -84,6 +90,7 @@ public abstract class Task {
 
     /**
      * Returns the string representation of the task.
+     *
      * @return String representation of task.
      */
     @Override

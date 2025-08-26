@@ -15,18 +15,22 @@ public class Event extends Task {
     /**
      * Instantiates an event based on the description and period of the task.
      * If no start / end date is provided, throws a missing date exception.
+     *
      * @param description Description of the task.
-     * @param from Start date of the event.
-     * @param to End date of the event.
+     * @param from        Start date of the event.
+     * @param to          End date of the event.
      * @throws KingException Error in creation of task.
      */
     public Event(String description, LocalDate from, LocalDate to) throws KingException {
         super(description);
 
-        if (from == null && to == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_TO_DATE); }
-        else if (from == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_DATE); }
-        else if (to == null) { throw new KingException(KingException.ErrorMessage.EVENT_MISSING_TO_DATE); }
-        else {
+        if (from == null && to == null) {
+            throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_TO_DATE);
+        } else if (from == null) {
+            throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_DATE);
+        } else if (to == null) {
+            throw new KingException(KingException.ErrorMessage.EVENT_MISSING_TO_DATE);
+        } else {
             this.from = from;
             this.to = to;
         }
@@ -34,6 +38,7 @@ public class Event extends Task {
 
     /**
      * Returns the start date of the event.
+     *
      * @return Start date.
      */
     public LocalDate getFrom() {
@@ -42,6 +47,7 @@ public class Event extends Task {
 
     /**
      * Returns the end date of the event.
+     *
      * @return End date.
      */
     public LocalDate getTo() {
@@ -50,6 +56,7 @@ public class Event extends Task {
 
     /**
      * Sets the start date of the event.
+     *
      * @param from king.task.Event start date.
      */
     public void setFrom(LocalDate from) {
@@ -58,6 +65,7 @@ public class Event extends Task {
 
     /**
      * Sets the end date of the event.
+     *
      * @param to king.task.Event end date.
      */
     public void setTo(LocalDate to) {

@@ -14,18 +14,23 @@ public class Deadline extends Task {
     /**
      * Instantiates a deadline task based on the description and deadline of the task.
      * If no deadline is provided, throws a missing deadline exception.
+     *
      * @param description Description of the task.
-     * @param by king.task.Deadline of the task.
+     * @param by          king.task.Deadline of the task.
      * @throws KingException Error in creation of task.
      */
     public Deadline(String description, LocalDate by) throws KingException {
         super(description);
-        if (by == null) { throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE); }
-        else {this.by = by;}
+        if (by == null) {
+            throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE);
+        } else {
+            this.by = by;
+        }
     }
 
     /**
      * Returns the completion date of the task.
+     *
      * @return Date of completion.
      */
     public LocalDate getBy() {
@@ -34,6 +39,7 @@ public class Deadline extends Task {
 
     /**
      * Sets the deadline of the task.
+     *
      * @param by king.task.Task deadline.
      */
     public void setBy(LocalDate by) {
