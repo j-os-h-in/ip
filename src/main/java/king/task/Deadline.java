@@ -5,6 +5,9 @@ import king.KingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Task with deadline for completion
+ */
 public class Deadline extends Task {
     private LocalDate by;
 

@@ -2,6 +2,9 @@ package king.task;
 
 import king.KingException;
 
+/**
+ * Abstract task that contains description and completion status
+ */
 public abstract class Task {
     private String description;
     private boolean complete;
