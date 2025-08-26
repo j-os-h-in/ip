@@ -2,6 +2,9 @@ package king;
 
 import java.io.IOException;
 
+/**
+ * IOException class for King
+ */
 public class KingException extends IOException {
     public enum ErrorMessage {
         INVALID_COMMAND("Invalid command"),
@@ -16,7 +19,7 @@ public class KingException extends IOException {
         UNMARK_MISSING_INDEX("Error! No unmark index specified!"),
         DELETE_MISSING_INDEX("Error! No delete index specified!"),
 
-        INVALID_DATABASE("[king.storage.KingStorage] Invalid data in database.");
+        INVALID_DATABASE("[KingStorage] Invalid data in database.");
 
         private final String message;
 
@@ -29,6 +32,10 @@ public class KingException extends IOException {
         }
     }
 
+    /**
+     * Creates an exception and displays the message of the exception
+     * @param errorMessage Error given
+     */
     public KingException(ErrorMessage errorMessage) {
         super(errorMessage.getMessage());
     }

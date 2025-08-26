@@ -5,6 +5,9 @@ import king.KingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Task with from date and to date
+ */
 public class Event extends Task {
     private LocalDate from;
     private LocalDate to;

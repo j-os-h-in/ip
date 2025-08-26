@@ -5,6 +5,9 @@ import king.KingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Parser for the King that helps with checking which commands have been called based on user input
+ */
 public class KingParser {
     public enum Commands {
         HELP,
@@ -32,24 +35,25 @@ public class KingParser {
 
     private String input;
 
+    /**
+     * Instantiates the parser with empty string input
+     */
     public KingParser() {
         this("");
     }
 
+    /**
+     * Instantiates the parser with a string input that the parser uses to check with the matchers
+     * @param input String input for parser to check
+     */
     public KingParser(String input) {
-        this.input = input;
-        helpMatcher     = Pattern.compile(helpRegex).matcher(input);
-        listMatcher     = Pattern.compile(listRegex).matcher(input);
-        dueMatcher      = Pattern.compile(dueRegex).matcher(input);
-        todoMatcher     = Pattern.compile(todoRegex).matcher(input);
-        deadlineMatcher = Pattern.compile(deadlineRegex).matcher(input);
-        eventMatcher    = Pattern.compile(eventRegex).matcher(input);
-        markMatcher     = Pattern.compile(markRegex).matcher(input);
-        unmarkMatcher   = Pattern.compile(unmarkRegex).matcher(input);
-        deleteMatcher   = Pattern.compile(deleteRegex).matcher(input);
-        endMatcher      = Pattern.compile(endRegex).matcher(input);
+        setNewInput(input);
     }
 
+    /**
+     * Sets the input for the parser object by recompiling the matchers to check with text
+     * @param input String input for parser to check
+     */
     public void setNewInput(String input) {
         input = input.strip();
         this.input = input;
@@ -65,6 +69,12 @@ public class KingParser {
         endMatcher      = Pattern.compile(endRegex).matcher(input);
     }
 
+    /**
+     * Check if a specific command has been called based on the matchers
+     * @param command King command to check for
+     * @return If command has been called, return true.
+     * @throws KingException If matching group is missing certain parts, throw IOError KingException.
+     */
     public boolean checkParser(Commands command) throws KingException {
         switch (command) {
         case HELP: return helpMatcher.matches();
@@ -118,43 +128,83 @@ public class KingParser {
         }
     }
 
+    /**
+     * Gets help command matcher
+     * @return Help command matcher
+     */
     public Matcher getHelpMatcher() {
         return helpMatcher;
     }
 
+    /**
+     * Gets list command matcher
+     * @return List command matcher
+     */
     public Matcher getListMatcher() {
         return listMatcher;
     }
 
+    /**
+     * Gets due command matcher
+     * @return Due command matcher
+     */
     public Matcher getDueMatcher() {
         return dueMatcher;
     }
 
+    /**
+     * Gets todo command matcher
+     * @return Todo command matcher
+     */
     public Matcher getTodoMatcher() {
         return todoMatcher;
     }
 
+    /**
+     * Gets deadline command matcher
+     * @return Deadline command matcher
+     */
     public Matcher getDeadlineMatcher() {
         return deadlineMatcher;
     }
 
+    /**
+     * Gets event commmand matcher
+     * @return Event command matcher
+     */
     public Matcher getEventMatcher() {
         return eventMatcher;
     }
 
+    /**
+     * Gets mark command matcher
+     * @return Mark command matcher
+     */
     public Matcher getMarkMatcher() {
         return markMatcher;
     }
 
+    /**
+     * Gets unmark command matcher
+     * @return Unmark command matcher
+     */
     public Matcher getUnmarkMatcher() {
         return unmarkMatcher;
     }
 
+    /**
+     * Gets delete command matcher
+     * @return Delete command matcher
+     */
     public Matcher getDeleteMatcher() {
         return deleteMatcher;
     }
 
-    public String getEndRegex() {
-        return endRegex;
+    /**
+     * Gets end command matcher
+     * @return End command matcher
+     */
+    public Matcher getEndMatcher() {
+        return endMatcher;
     }
 }

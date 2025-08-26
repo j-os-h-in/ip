@@ -2,6 +2,9 @@ package king.task;
 
 import king.KingException;
 
+/**
+ * Todo task with basic description and completion
+ */
 public class Todo extends Task {
     /**
      * Instantiates a todo task based on the description of the task.

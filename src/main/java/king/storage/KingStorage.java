@@ -18,6 +18,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Storage for the King that helps with managing the file I/O for the database
+ */
 public class KingStorage {
     private final String databasePath = "data" + FileSystems.getDefault().getSeparator() + "king.txt";
     private final File database = new File(databasePath);
@@ -57,7 +60,7 @@ public class KingStorage {
 
     /**
      * Adds a task to the database file.
-     * @param task king.task.Task to be added to the database.
+     * @param task Task to be added to the database.
      */
     public void addToFile(Task task) {
         if (!database.exists()) createFile();
