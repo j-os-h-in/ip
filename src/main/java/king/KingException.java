@@ -7,6 +7,8 @@ public class KingException extends IOException {
         INVALID_COMMAND("Invalid command"),
         MISSING_TASK_DESCRIPTION("Error! Missing task description! Type it after todo/deadline/event."),
 
+        FIND_MISSING_SEARCH("Error! Search string is missing from command! Use the format `find [keyword].`"),
+
         DEADLINE_MISSING_DEADLINE("Error! king.task.Deadline is not provided! Use the format `deadline [task] /by [date]`"),
 
         EVENT_MISSING_FROM_TO_DATE("Error! From and to date is missing! Use the format `event [task] /from [date] /to [date]`"),

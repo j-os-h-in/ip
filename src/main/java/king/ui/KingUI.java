@@ -51,6 +51,15 @@ public class KingUI {
         }
     }
 
+    public void showFindList(ArrayList<Task> list, String search) {
+        System.out.println(spacer + " Here are the matching tasks in your list:");
+        for (int i = 1; i <= list.size(); i++) {
+            if (list.get(i - 1).getDescription().contains(search)) {
+                System.out.println(spacer + " " + i + ". " + list.get(i - 1));
+            }
+        }
+    }
+
     public void showTaskCreate(Task task, int size) {
         System.out.println(spacer + " Ok! I've added this task:");
         System.out.println(spacer + "   " + task);
