@@ -47,59 +47,54 @@ public class King {
                     }
 
                     // todo command - creates a new todo task
-                    else if (kingParser.checkParser(KingParser.Commands.TODO)){
+                    else if (kingParser.checkParser(KingParser.Commands.TODO)) {
                         Todo newTask = new Todo(kingParser.getTodoMatcher().group(1));
                         kingTaskList.addTask(newTask);
                         kingUI.showTaskCreate(newTask, kingTaskList.getSize());
                     }
 
                     // deadline command - creates a new deadline task
-                    else if (kingParser.checkParser(KingParser.Commands.DEADLINE)){
+                    else if (kingParser.checkParser(KingParser.Commands.DEADLINE)) {
                         Deadline newTask = new Deadline(kingParser.getDeadlineMatcher().group(1), LocalDate.parse(kingParser.getDeadlineMatcher().group(2)));
                         kingTaskList.addTask(newTask);
                         kingUI.showTaskCreate(newTask, kingTaskList.getSize());
                     }
 
                     // event command - creates a new event task
-                    else if (kingParser.checkParser(KingParser.Commands.EVENT)){
+                    else if (kingParser.checkParser(KingParser.Commands.EVENT)) {
                         Event newTask = new Event(kingParser.getEventMatcher().group(1), LocalDate.parse(kingParser.getEventMatcher().group(2)), LocalDate.parse(kingParser.getEventMatcher().group(3)));
                         kingTaskList.addTask(newTask);
                         kingUI.showTaskCreate(newTask, kingTaskList.getSize());
                     }
 
                     // mark command - marks a task complete
-                    else if (kingParser.checkParser(KingParser.Commands.MARK)){
+                    else if (kingParser.checkParser(KingParser.Commands.MARK)) {
                         int idx = Integer.parseInt(kingParser.getMarkMatcher().group(1)) - 1;
                         kingTaskList.markDone(idx);
                         kingUI.showMark(kingTaskList.getTask(idx));
                     }
 
                     // unmark command - marks a task incomplete
-                    else if (kingParser.checkParser(KingParser.Commands.UNMARK)){
+                    else if (kingParser.checkParser(KingParser.Commands.UNMARK)) {
                         int idx = Integer.parseInt(kingParser.getUnmarkMatcher().group(1)) - 1;
                         kingTaskList.unmarkDone(idx);
                         kingUI.showUnmark(kingTaskList.getTask(idx));
                     }
 
                     // delete command - deletes a task
-                    else if (kingParser.checkParser(KingParser.Commands.DELETE)){
+                    else if (kingParser.checkParser(KingParser.Commands.DELETE)) {
                         int idx = Integer.parseInt(kingParser.getDeleteMatcher().group(1)) - 1;
                         kingUI.showDelete(kingTaskList.deleteTask(idx), kingTaskList.getSize());
-                    }
-                    else {
+                    } else {
                         kingUI.showInvalidCommand();
                     }
-                }
-                catch (KingException e) {
+                } catch (KingException e) {
                     kingUI.showError(e);
-                }
-                catch (IndexOutOfBoundsException e) {
+                } catch (IndexOutOfBoundsException e) {
                     kingUI.showInvalidTask();
-                }
-                catch (DateTimeParseException e) {
+                } catch (DateTimeParseException e) {
                     kingUI.showInvalidDateTime();
-                }
-                finally {
+                } finally {
                     kingUI.showLine();
                     text = scanner.nextLine().strip();
                     kingParser.setNewInput(text);
@@ -107,9 +102,7 @@ public class King {
             }
             scanner.close();
             kingUI.showBye();
-        }
-
-        catch (KingException e) {
+        } catch (KingException e) {
             kingUI.showError(e);
         }
     }

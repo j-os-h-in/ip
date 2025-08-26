@@ -21,6 +21,7 @@ import java.util.Scanner;
 public class KingStorage {
     private final String databasePath = "data" + FileSystems.getDefault().getSeparator() + "king.txt";
     private final File database = new File(databasePath);
+
     private enum STORAGE_ACTIONS {
         MARK_DONE,
         UNMARK_DONE,
@@ -40,16 +41,15 @@ public class KingStorage {
     private void createFile() {
         try {
             // Create parent folders
-            if(database.getParentFile() != null && !database.getParentFile().exists()) {
+            if (database.getParentFile() != null && !database.getParentFile().exists()) {
                 boolean success = database.getParentFile().mkdirs();
             }
 
             // Create database file
-            if(!database.createNewFile()) {
+            if (!database.createNewFile()) {
                 System.out.println("[KingStorage] The database file already exists or could not be created.");
             }
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             System.out.println("[KingStorage] An error occurred when creating the database file: " + ioe);
             System.out.println("[KingStorage] Your data is not saved.");
         }
@@ -57,13 +57,14 @@ public class KingStorage {
 
     /**
      * Adds a task to the database file.
+     *
      * @param task king.task.Task to be added to the database.
      */
     public void addToFile(Task task) {
         if (!database.exists()) createFile();
         try {
             FileWriter fw = new FileWriter(databasePath, true);
-            switch(task.getType()) {
+            switch (task.getType()) {
             case TODO:
                 Todo todo = (Todo) task;
                 fw.write("T | " + (todo.getComplete() ? 1 : 0) + " | " + todo.getDescription() + "\n");
@@ -78,14 +79,14 @@ public class KingStorage {
                 break;
             }
             fw.close();
-        }
-        catch(IOException ioe) {
+        } catch (IOException ioe) {
             System.out.println("[KingStorage] Exception when adding task to file: " + ioe);
         }
     }
 
     /**
      * Marks a task in the database file as complete.
+     *
      * @param index Index of task to be marked complete.
      */
     public void markDone(int index) {
@@ -95,6 +96,7 @@ public class KingStorage {
 
     /**
      * Marks a task in the database file as incomplete.
+     *
      * @param index Index of task to be marked incomplete.
      */
     public void unmarkDone(int index) {
@@ -104,6 +106,7 @@ public class KingStorage {
 
     /**
      * Removes a task in the database file.
+     *
      * @param index Index of task to be removed.
      */
     public void remove(int index) {
@@ -113,6 +116,7 @@ public class KingStorage {
 
     /**
      * Loads the tasks in the database file into an ArrayList of Tasks.
+     *
      * @return ArraysList of Tasks.
      */
     public ArrayList<Task> loadFile() {
@@ -124,31 +128,30 @@ public class KingStorage {
                 String[] taskStrings = s.nextLine().split("\\s*\\|\\s*");
 
                 switch (taskStrings[0]) {
-                    case "T":
-                        Todo newTodo = new Todo(taskStrings[2]);
-                        if (taskStrings[1].equals("1")) newTodo.markDone();
-                        tasks.add(newTodo);
-                        break;
-                    case "D":
-                        Deadline newDeadline = new Deadline(taskStrings[2], LocalDate.parse(taskStrings[3]));
-                        if (taskStrings[1].equals("1")) newDeadline.markDone();
-                        tasks.add(newDeadline);
-                        break;
-                    case "E":
-                        Event newEvent = new Event(taskStrings[2], LocalDate.parse(taskStrings[3]), LocalDate.parse(taskStrings[4]));
-                        if (taskStrings[1].equals("1")) newEvent.markDone();
-                        tasks.add(newEvent);
-                        break;
-                    default:
-                        throw new KingException(KingException.ErrorMessage.INVALID_DATABASE);
+                case "T":
+                    Todo newTodo = new Todo(taskStrings[2]);
+                    if (taskStrings[1].equals("1")) newTodo.markDone();
+                    tasks.add(newTodo);
+                    break;
+                case "D":
+                    Deadline newDeadline = new Deadline(taskStrings[2], LocalDate.parse(taskStrings[3]));
+                    if (taskStrings[1].equals("1")) newDeadline.markDone();
+                    tasks.add(newDeadline);
+                    break;
+                case "E":
+                    Event newEvent = new Event(taskStrings[2], LocalDate.parse(taskStrings[3]), LocalDate.parse(taskStrings[4]));
+                    if (taskStrings[1].equals("1")) newEvent.markDone();
+                    tasks.add(newEvent);
+                    break;
+                default:
+                    throw new KingException(KingException.ErrorMessage.INVALID_DATABASE);
                 }
             }
             s.close();
             return tasks;
-        }
-        catch (KingException ke) {
+        } catch (KingException ke) {
             System.out.println(ke.getMessage() + " Would you like to reset the database? [Y / N]");
-            Scanner scanner = new Scanner (System.in);
+            Scanner scanner = new Scanner(System.in);
             String text = scanner.nextLine();
             while (!text.equals("Y") && !text.equals("N")) {
                 System.out.println(ke.getMessage() + " Would you like to reset the database? [Y / N]");
@@ -156,15 +159,12 @@ public class KingStorage {
             }
             if (text.equals("Y")) {
                 resetFile();
-            }
-            else {
+            } else {
                 System.out.println("[KingStorage] Operation cancelled. Your tasks created will not be saved.");
             }
-        }
-        catch (ArrayIndexOutOfBoundsException aie) {
+        } catch (ArrayIndexOutOfBoundsException aie) {
             System.out.println("[KingStorage] File may be corrupted: " + aie);
-        }
-        catch (FileNotFoundException fnfe) {
+        } catch (FileNotFoundException fnfe) {
             System.out.println("[KingStorage] File not found: " + fnfe);
         }
         return null;
@@ -181,8 +181,9 @@ public class KingStorage {
 
     /**
      * Helper function to replace line in the database file.
+     *
      * @param row Row number of line to be edited / replaced.
-     * @param sa Action to be done on the line in the database file.
+     * @param sa  Action to be done on the line in the database file.
      */
     private void replaceLine(int row, STORAGE_ACTIONS sa) {
         try {
@@ -191,7 +192,7 @@ public class KingStorage {
             if (row >= 0 && row < allLines.size()) {
                 String line = allLines.get(row);
                 String[] taskStrings = line.split("\\s*\\|\\s*");
-                switch(sa) {
+                switch (sa) {
                 case MARK_DONE:
                     taskStrings[1] = "1";
                     allLines.set(row, String.join(" | ", taskStrings));
@@ -207,8 +208,7 @@ public class KingStorage {
                 }
             }
             Files.write(path, allLines);
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             System.out.println("[KingDatabase] Unable to edit database, changes were not saved.");
         }
     }

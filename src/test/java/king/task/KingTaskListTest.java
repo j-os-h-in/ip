@@ -1,6 +1,7 @@
 package king.task;
 
 import king.KingException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +36,7 @@ public class KingTaskListTest {
     public void addTask_singleTask_success() {
         int initialSize = kingTaskList.getSize();
         kingTaskList.addTask(testBasicTodo);
-        
+
         assertEquals(initialSize + 1, kingTaskList.getSize());
         assertEquals(testBasicTodo, kingTaskList.getTask(kingTaskList.getSize() - 1));
     }
@@ -43,11 +44,11 @@ public class KingTaskListTest {
     @Test
     public void addTask_multipleTasks_success() throws KingException {
         int initialSize = kingTaskList.getSize();
-        
+
         kingTaskList.addTask(testBasicTodo);
         kingTaskList.addTask(testBasicDeadline);
         kingTaskList.addTask(testBasicEvent);
-        
+
         assertEquals(initialSize + 3, kingTaskList.getSize());
         assertEquals(testBasicTodo, kingTaskList.getTask(initialSize));
         assertEquals(testBasicDeadline, kingTaskList.getTask(initialSize + 1));
@@ -66,7 +67,7 @@ public class KingTaskListTest {
         assertThrows(IndexOutOfBoundsException.class, () -> {
             kingTaskList.getTask(-1);
         });
-        
+
         assertThrows(IndexOutOfBoundsException.class, () -> {
             kingTaskList.getTask(kingTaskList.getSize());
         });
@@ -76,7 +77,7 @@ public class KingTaskListTest {
     public void markDone_validIndex_success() {
         kingTaskList.addTask(testBasicTodo);
         int taskIndex = kingTaskList.getSize() - 1;
-        
+
         assertFalse(kingTaskList.getTask(taskIndex).getComplete());
         kingTaskList.markDone(taskIndex);
         assertTrue(kingTaskList.getTask(taskIndex).getComplete());
@@ -97,11 +98,11 @@ public class KingTaskListTest {
     public void unmarkDone_validIndex_success() {
         kingTaskList.addTask(testBasicTodo);
         int taskIndex = kingTaskList.getSize() - 1;
-        
+
         // First mark it as done
         kingTaskList.markDone(taskIndex);
         assertTrue(kingTaskList.getTask(taskIndex).getComplete());
-        
+
         // Then unmark it
         kingTaskList.unmarkDone(taskIndex);
         assertFalse(kingTaskList.getTask(taskIndex).getComplete());
@@ -112,7 +113,7 @@ public class KingTaskListTest {
         assertThrows(IndexOutOfBoundsException.class, () -> {
             kingTaskList.unmarkDone(-1);
         });
-        
+
         assertThrows(IndexOutOfBoundsException.class, () -> {
             kingTaskList.unmarkDone(kingTaskList.getSize());
         });
@@ -123,9 +124,9 @@ public class KingTaskListTest {
         kingTaskList.addTask(testBasicTodo);
         kingTaskList.addTask(testBasicDeadline);
         int initialSize = kingTaskList.getSize();
-        
+
         Task deletedTask = kingTaskList.deleteTask(0);
-        
+
         assertEquals(testBasicTodo, deletedTask);
         assertEquals(initialSize - 1, kingTaskList.getSize());
         assertEquals(testBasicDeadline, kingTaskList.getTask(0));
@@ -136,7 +137,7 @@ public class KingTaskListTest {
         assertThrows(IndexOutOfBoundsException.class, () -> {
             kingTaskList.deleteTask(-1);
         });
-        
+
         assertThrows(IndexOutOfBoundsException.class, () -> {
             kingTaskList.deleteTask(kingTaskList.getSize());
         });
@@ -161,13 +162,13 @@ public class KingTaskListTest {
     @Test
     public void getSize_withTasks() {
         int initialSize = kingTaskList.getSize();
-        
+
         kingTaskList.addTask(testBasicTodo);
         assertEquals(initialSize + 1, kingTaskList.getSize());
-        
+
         kingTaskList.addTask(testBasicDeadline);
         assertEquals(initialSize + 2, kingTaskList.getSize());
-        
+
         kingTaskList.deleteTask(0);
         assertEquals(initialSize + 1, kingTaskList.getSize());
     }
@@ -176,7 +177,7 @@ public class KingTaskListTest {
     public void getTasks_returnsCorrectList() {
         kingTaskList.addTask(testBasicTodo);
         kingTaskList.addTask(testBasicDeadline);
-        
+
         ArrayList<Task> tasks = kingTaskList.getTasks();
         assertEquals(2, tasks.size() - (kingTaskList.getSize() - 2)); // Account for any existing tasks
         assertTrue(tasks.contains(testBasicTodo));
@@ -188,13 +189,13 @@ public class KingTaskListTest {
         kingTaskList.addTask(testBasicTodo);
         kingTaskList.addTask(testBasicDeadline);
         kingTaskList.addTask(testBasicEvent);
-        
+
         int size = kingTaskList.getSize();
         assertEquals(3, size - (size - 3));
 
         kingTaskList.markDone(size - 3); // Todo Task
         kingTaskList.markDone(size - 1); // Event Task
-        
+
         assertTrue(kingTaskList.getTask(size - 3).getComplete());
         assertFalse(kingTaskList.getTask(size - 2).getComplete());
         assertTrue(kingTaskList.getTask(size - 1).getComplete());
