@@ -43,6 +43,7 @@ public class KingUI {
 
     /**
      * Show all tasks for list command
+     *
      * @param list List of all tasks
      */
     public void showAllList(ArrayList<Task> list) {
@@ -54,6 +55,7 @@ public class KingUI {
 
     /**
      * Show specific tasks due for due command
+     *
      * @param list List of all tasks
      * @param date Date of task due
      */
@@ -70,7 +72,24 @@ public class KingUI {
     }
 
     /**
+     * Shows specific tasks matching find command
+     *
+     * @param list   List of all tasks
+     * @param search Search string for tasks
+     */
+    public void showFindList(ArrayList<Task> list, String search) {
+        System.out.println(spacer + " Here are the matching tasks in your list:");
+        for (int i = 1; i <= list.size(); i++) {
+            if (list.get(i - 1).getDescription().contains(search)) {
+                System.out.println(spacer + " " + i + ". " + list.get(i - 1));
+            }
+        }
+    }
+
+
+    /**
      * Show specific task created for todo / deadline / event command
+     *
      * @param task Task to be created
      * @param size Updated size of task list
      */
@@ -82,6 +101,7 @@ public class KingUI {
 
     /**
      * Show specific task marked for mark command
+     *
      * @param task Task marked
      */
     public void showMark(Task task) {
@@ -91,6 +111,7 @@ public class KingUI {
 
     /**
      * Show specific task unmarked for unmark command
+     *
      * @param task Task unmarked
      */
     public void showUnmark(Task task) {
@@ -100,6 +121,7 @@ public class KingUI {
 
     /**
      * Show specific task deleted for delete command
+     *
      * @param task Task deleted
      * @param size Updated size of task list
      */
@@ -141,6 +163,7 @@ public class KingUI {
 
     /**
      * Show message for KingException
+     *
      * @param e Exception given for error in user IO
      */
     public void showError(KingException e) {

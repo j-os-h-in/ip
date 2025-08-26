@@ -22,6 +22,7 @@ public class KingTaskList {
 
     /**
      * Instantiates an empty task list with the data from the database reset
+     *
      * @param reset If reset is true, reset the database.
      */
     public KingTaskList(boolean reset) {
@@ -31,6 +32,7 @@ public class KingTaskList {
 
     /**
      * Gets the task list
+     *
      * @return Tasklist of user
      */
     public ArrayList<Task> getTasks() {
@@ -39,6 +41,7 @@ public class KingTaskList {
 
     /**
      * Adds a new task to the task list and database
+     *
      * @param newTask New task to be added into the task list and database
      */
     public void addTask(Task newTask) {
@@ -48,6 +51,7 @@ public class KingTaskList {
 
     /**
      * Gets the task at specific index of the task list
+     *
      * @param idx Index to get task from
      * @return Task at index
      */
@@ -57,6 +61,7 @@ public class KingTaskList {
 
     /**
      * Marks the task at specific index of the task list done
+     *
      * @param idx Index to get task
      */
     public void markDone(int idx) {
@@ -66,6 +71,7 @@ public class KingTaskList {
 
     /**
      * Unmarks the task at specific index of the task list done
+     *
      * @param idx Index to get task
      */
     public void unmarkDone(int idx) {
@@ -75,6 +81,7 @@ public class KingTaskList {
 
     /**
      * Deletes the task at specific index of the task list
+     *
      * @param idx Index to get task
      */
     public Task deleteTask(int idx) {
@@ -93,6 +100,7 @@ public class KingTaskList {
 
     /**
      * Gets the size of the task list
+     *
      * @return Size of task list
      */
     public int getSize() {

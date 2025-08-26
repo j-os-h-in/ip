@@ -13,6 +13,7 @@ public class KingParser {
         HELP,
         LIST,
         DUE,
+        FIND,
         TODO,
         DEADLINE,
         EVENT,
@@ -25,6 +26,7 @@ public class KingParser {
     private final String helpRegex = "^help$";
     private final String listRegex = "^list$";
     private final String dueRegex = "^due(?:\\s+(.*))?$";
+    private final String findRegex = "^find(?:\\s+(.*))?$";
     private final String todoRegex = "^todo(?:\\s+(.*))?$";
     private final String deadlineRegex = "^deadline(?:\\s+(.*?)\\s*(?:/by\\s+(.+))?)?$";
     private final String eventRegex = "^event(?:\\s+(.*?)(?:\\s+/from\\s+(.+?))?(?:\\s+/to\\s+(.+))?)?$";
@@ -32,7 +34,7 @@ public class KingParser {
     private final String unmarkRegex = "^unmark(?:\\s+(\\d*))?$";
     private final String deleteRegex = "^delete(?:\\s+(\\d*))?$";
     private final String endRegex = "^bye$";
-    private Matcher helpMatcher, listMatcher, dueMatcher, todoMatcher, deadlineMatcher, eventMatcher, markMatcher, unmarkMatcher, deleteMatcher, endMatcher;
+    private Matcher helpMatcher, listMatcher, dueMatcher, findMatcher, todoMatcher, deadlineMatcher, eventMatcher, markMatcher, unmarkMatcher, deleteMatcher, endMatcher;
 
     private String input;
 
@@ -45,6 +47,7 @@ public class KingParser {
 
     /**
      * Instantiates the parser with a string input that the parser uses to check with the matchers
+     *
      * @param input String input for parser to check
      */
     public KingParser(String input) {
@@ -53,6 +56,7 @@ public class KingParser {
 
     /**
      * Sets the input for the parser object by recompiling the matchers to check with text
+     *
      * @param input String input for parser to check
      */
     public void setNewInput(String input) {
@@ -61,6 +65,7 @@ public class KingParser {
         helpMatcher = Pattern.compile(helpRegex).matcher(input);
         listMatcher = Pattern.compile(listRegex).matcher(input);
         dueMatcher = Pattern.compile(dueRegex).matcher(input);
+        findMatcher = Pattern.compile(findRegex).matcher(input);
         todoMatcher = Pattern.compile(todoRegex).matcher(input);
         deadlineMatcher = Pattern.compile(deadlineRegex).matcher(input);
         eventMatcher = Pattern.compile(eventRegex).matcher(input);
@@ -72,6 +77,7 @@ public class KingParser {
 
     /**
      * Check if a specific command has been called based on the matchers
+     *
      * @param command King command to check for
      * @return If command has been called, return true.
      * @throws KingException If matching group is missing certain parts, throw IOError KingException.
@@ -89,6 +95,12 @@ public class KingParser {
                 return true;
             }
             return false;
+        case FIND:
+            if (findMatcher.matches()) {
+                if (findMatcher.group(1) == null)
+                    throw new KingException(KingException.ErrorMessage.FIND_MISSING_SEARCH);
+                return true;
+            }
         case TODO:
             if (todoMatcher.matches()) {
                 if (todoMatcher.group(1) == null)
@@ -145,6 +157,7 @@ public class KingParser {
 
     /**
      * Gets help command matcher
+     *
      * @return Help command matcher
      */
     public Matcher getHelpMatcher() {
@@ -153,6 +166,7 @@ public class KingParser {
 
     /**
      * Gets list command matcher
+     *
      * @return List command matcher
      */
     public Matcher getListMatcher() {
@@ -161,6 +175,7 @@ public class KingParser {
 
     /**
      * Gets due command matcher
+     *
      * @return Due command matcher
      */
     public Matcher getDueMatcher() {
@@ -168,7 +183,17 @@ public class KingParser {
     }
 
     /**
+     * Gets find command matcher
+     *
+     * @return Find command matcher
+     */
+    public Matcher getFindMatcher() {
+        return findMatcher;
+    }
+
+    /**
      * Gets todo command matcher
+     *
      * @return Todo command matcher
      */
     public Matcher getTodoMatcher() {
@@ -177,6 +202,7 @@ public class KingParser {
 
     /**
      * Gets deadline command matcher
+     *
      * @return Deadline command matcher
      */
     public Matcher getDeadlineMatcher() {
@@ -185,6 +211,7 @@ public class KingParser {
 
     /**
      * Gets event commmand matcher
+     *
      * @return Event command matcher
      */
     public Matcher getEventMatcher() {
@@ -193,6 +220,7 @@ public class KingParser {
 
     /**
      * Gets mark command matcher
+     *
      * @return Mark command matcher
      */
     public Matcher getMarkMatcher() {
@@ -201,6 +229,7 @@ public class KingParser {
 
     /**
      * Gets unmark command matcher
+     *
      * @return Unmark command matcher
      */
     public Matcher getUnmarkMatcher() {
@@ -209,6 +238,7 @@ public class KingParser {
 
     /**
      * Gets delete command matcher
+     *
      * @return Delete command matcher
      */
     public Matcher getDeleteMatcher() {
@@ -217,6 +247,7 @@ public class KingParser {
 
     /**
      * Gets end command matcher
+     *
      * @return End command matcher
      */
     public Matcher getEndMatcher() {

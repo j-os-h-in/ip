@@ -46,6 +46,11 @@ public class King {
                         kingUI.showDueList(kingTaskList.getTasks(), LocalDate.parse(kingParser.getDueMatcher().group(1)));
                     }
 
+                    // find command - finds all tasks with a certain name
+                    else if (kingParser.checkParser(KingParser.Commands.FIND)) {
+                        kingUI.showFindList(kingTaskList.getTasks(), kingParser.getFindMatcher().group(1));
+                    }
+
                     // todo command - creates a new todo task
                     else if (kingParser.checkParser(KingParser.Commands.TODO)) {
                         Todo newTask = new Todo(kingParser.getTodoMatcher().group(1));
