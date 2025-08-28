@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+import javafx.application.Application;
 import king.parser.KingParser;
 import king.task.Deadline;
 import king.task.Event;
 import king.task.KingTaskList;
 import king.task.Todo;
+import king.ui.KingGui;
 import king.ui.KingUI;
 
 /**
@@ -16,6 +18,8 @@ import king.ui.KingUI;
  */
 public class King {
     public static void main(String[] args) {
+        Application.launch(KingGui.class, args);
+
         // Initialise UI, Storage, Parser and TaskList
         KingUI kingUI = new KingUI();
         KingParser kingParser = new KingParser("");
