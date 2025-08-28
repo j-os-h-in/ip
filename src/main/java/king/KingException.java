@@ -6,15 +6,17 @@ import java.io.IOException;
  * IOException class for King
  */
 public class KingException extends IOException {
+    /**
+     * Enumeration of all possible IO errors for King
+     */
     public enum ErrorMessage {
         INVALID_COMMAND("Invalid command"),
         MISSING_TASK_DESCRIPTION("Error! Missing task description! Type it after todo/deadline/event."),
-
         FIND_MISSING_SEARCH("Error! Search string is missing from command! Use the format `find [keyword].`"),
-
-        DEADLINE_MISSING_DEADLINE("Error! king.task.Deadline is not provided! Use the format `deadline [task] /by [date]`"),
-
-        EVENT_MISSING_FROM_TO_DATE("Error! From and to date is missing! Use the format `event [task] /from [date] /to [date]`"),
+        DEADLINE_MISSING_DEADLINE("Error! Deadline is not provided! "
+                + "Use the format `deadline [task] /by [date]`"),
+        EVENT_MISSING_FROM_TO_DATE("Error! From and to date is missing! "
+                + "Use the format `event [task] /from [date] /to [date]`"),
         EVENT_MISSING_FROM_DATE("Error! From date is missing! Use the format `event [task] /from [date] /to [date]`"),
         EVENT_MISSING_TO_DATE("Error! To date is missing! Use the format `event [task] /from [date] /to [date]`"),
         MARK_MISSING_INDEX("Error! No mark index specified!"),

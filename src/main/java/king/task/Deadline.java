@@ -1,9 +1,9 @@
 package king.task;
 
-import king.KingException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import king.KingException;
 
 /**
  * Task with deadline for completion

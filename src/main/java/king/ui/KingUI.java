@@ -1,12 +1,12 @@
 package king.ui;
 
-import king.task.Deadline;
-import king.KingException;
-import king.task.Task;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import king.KingException;
+import king.task.Deadline;
+import king.task.Task;
 
 /**
  * UI Manager for the King that helps with printing of statements
@@ -29,16 +29,26 @@ public class KingUI {
      */
     public void showHelp() {
         System.out.println(spacer + " Need help? Here is the list of commands you can use to use this chat bot!");
-        System.out.println(spacer + " list                                                  - Gets the list of tasks you currently have");
-        System.out.println(spacer + " due [YYYY-MM-DD]                                      - Gets tasks due on specific date");
-        System.out.println(spacer + " todo [task name]                                      - Creates a new todo task");
-        System.out.println(spacer + " deadline [task name] /by [YYYY-MM-DD]                 - Creates a new deadline task with a time to complete by");
-        System.out.println(spacer + " event [task name] /from [YYYY-MM-DD] /to [YYYY-MM-DD] - Creates a new event based on a period");
-        System.out.println(spacer + " mark [index]                                          - Marks the task at the index to be complete");
-        System.out.println(spacer + " unmark [index]                                        - Marks the task at the index to be incomplete");
-        System.out.println(spacer + " delete [index]                                        - Deletes the task at the index");
-        System.out.println(spacer + " bye                                                   - Ends the program");
-        System.out.println(spacer + " help                                                  - Provides the list of commands to query the bot");
+        System.out.println(spacer + " list                                                  "
+                + "- Gets the list of tasks you currently have");
+        System.out.println(spacer + " due [YYYY-MM-DD]                                      "
+                + "- Gets tasks due on specific date");
+        System.out.println(spacer + " todo [task name]                                      "
+                + "- Creates a new todo task");
+        System.out.println(spacer + " deadline [task name] /by [YYYY-MM-DD]                 "
+                + "- Creates a new deadline task with a time to complete by");
+        System.out.println(spacer + " event [task name] /from [YYYY-MM-DD] /to [YYYY-MM-DD] "
+                + "- Creates a new event based on a period");
+        System.out.println(spacer + " mark [index]                                          "
+                + "- Marks the task at the index to be complete");
+        System.out.println(spacer + " unmark [index]                                        "
+                + "- Marks the task at the index to be incomplete");
+        System.out.println(spacer + " delete [index]                                        "
+                + "- Deletes the task at the index");
+        System.out.println(spacer + " bye                                                   "
+                + "- Ends the program");
+        System.out.println(spacer + " help                                                  "
+                + "- Provides the list of commands to query the bot");
     }
 
     /**
@@ -60,7 +70,8 @@ public class KingUI {
      * @param date Date of task due
      */
     public void showDueList(ArrayList<Task> list, LocalDate date) {
-        System.out.println(spacer + " Here are the tasks due on:" + date.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ".");
+        System.out.println(spacer + " Here are the tasks due on:"
+                + date.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ".");
         for (int i = 1; i <= list.size(); i++) {
             if (list.get(i - 1).getType() == Task.Type.DEADLINE) {
                 Deadline deadlineTask = (Deadline) list.get(i - 1);

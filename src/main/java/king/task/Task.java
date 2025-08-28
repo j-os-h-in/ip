@@ -9,6 +9,9 @@ public abstract class Task {
     private String description;
     private boolean complete;
 
+    /**
+     * Enumeration of possible task types
+     */
     public enum Type {
         TODO,
         DEADLINE,

@@ -1,11 +1,5 @@
 package king.storage;
 
-import king.KingException;
-import king.task.Deadline;
-import king.task.Event;
-import king.task.Task;
-import king.task.Todo;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -18,6 +12,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import king.KingException;
+import king.task.Deadline;
+import king.task.Event;
+import king.task.Task;
+import king.task.Todo;
+
 /**
  * Storage for the King that helps with managing the file I/O for the database
  */
@@ -25,7 +25,10 @@ public class KingStorage {
     private final String databasePath = "data" + FileSystems.getDefault().getSeparator() + "king.txt";
     private final File database = new File(databasePath);
 
-    private enum STORAGE_ACTIONS {
+    /**
+     * Enumeration of possible storage actions for database
+     */
+    private enum StorageActions {
         MARK_DONE,
         UNMARK_DONE,
         DELETE_TASK
@@ -35,7 +38,9 @@ public class KingStorage {
      * Instantiates the database. If the database file has not been created, it creates the file.
      */
     public KingStorage() {
-        if (!database.exists()) createFile();
+        if (!database.exists()) {
+            createFile();
+        }
     }
 
     /**
@@ -64,7 +69,9 @@ public class KingStorage {
      * @param task Task to be added to the database.
      **/
     public void addToFile(Task task) {
-        if (!database.exists()) createFile();
+        if (!database.exists()) {
+            createFile();
+        }
         try {
             FileWriter fw = new FileWriter(databasePath, true);
             switch (task.getType()) {
@@ -74,11 +81,18 @@ public class KingStorage {
                 break;
             case DEADLINE:
                 Deadline deadline = (Deadline) task;
-                fw.write("D | " + (deadline.getComplete() ? 1 : 0) + " | " + deadline.getDescription() + " | " + deadline.getBy() + "\n");
+                fw.write("D | " + (deadline.getComplete() ? 1 : 0)
+                        + " | " + deadline.getDescription() + " | "
+                        + deadline.getBy() + "\n");
                 break;
             case EVENT:
                 Event event = (Event) task;
-                fw.write("E | " + (event.getComplete() ? 1 : 0) + " | " + event.getDescription() + " | " + event.getFrom() + " | " + event.getTo() + "\n");
+                fw.write("E | " + (event.getComplete() ? 1 : 0)
+                        + " | " + event.getDescription()
+                        + " | " + event.getFrom()
+                        + " | " + event.getTo() + "\n");
+                break;
+            default:
                 break;
             }
             fw.close();
@@ -93,8 +107,10 @@ public class KingStorage {
      * @param index Index of task to be marked complete.
      */
     public void markDone(int index) {
-        if (!database.exists()) createFile();
-        replaceLine(index, STORAGE_ACTIONS.MARK_DONE);
+        if (!database.exists()) {
+            createFile();
+        }
+        replaceLine(index, StorageActions.MARK_DONE);
     }
 
     /**
@@ -103,8 +119,10 @@ public class KingStorage {
      * @param index Index of task to be marked incomplete.
      */
     public void unmarkDone(int index) {
-        if (!database.exists()) createFile();
-        replaceLine(index, STORAGE_ACTIONS.UNMARK_DONE);
+        if (!database.exists()) {
+            createFile();
+        }
+        replaceLine(index, StorageActions.UNMARK_DONE);
     }
 
     /**
@@ -113,8 +131,10 @@ public class KingStorage {
      * @param index Index of task to be removed.
      */
     public void remove(int index) {
-        if (!database.exists()) createFile();
-        replaceLine(index, STORAGE_ACTIONS.DELETE_TASK);
+        if (!database.exists()) {
+            createFile();
+        }
+        replaceLine(index, StorageActions.DELETE_TASK);
     }
 
     /**
@@ -123,7 +143,9 @@ public class KingStorage {
      * @return ArraysList of Tasks.
      */
     public ArrayList<Task> loadFile() {
-        if (!database.exists()) return null;
+        if (!database.exists()) {
+            return null;
+        }
         try {
             Scanner s = new Scanner(database);
             ArrayList<Task> tasks = new ArrayList<>();
@@ -133,17 +155,26 @@ public class KingStorage {
                 switch (taskStrings[0]) {
                 case "T":
                     Todo newTodo = new Todo(taskStrings[2]);
-                    if (taskStrings[1].equals("1")) newTodo.markDone();
+                    if (taskStrings[1].equals("1")) {
+                        newTodo.markDone();
+                    }
                     tasks.add(newTodo);
                     break;
                 case "D":
                     Deadline newDeadline = new Deadline(taskStrings[2], LocalDate.parse(taskStrings[3]));
-                    if (taskStrings[1].equals("1")) newDeadline.markDone();
+                    if (taskStrings[1].equals("1")) {
+                        newDeadline.markDone();
+                    }
                     tasks.add(newDeadline);
                     break;
                 case "E":
-                    Event newEvent = new Event(taskStrings[2], LocalDate.parse(taskStrings[3]), LocalDate.parse(taskStrings[4]));
-                    if (taskStrings[1].equals("1")) newEvent.markDone();
+                    Event newEvent = new Event(
+                            taskStrings[2],
+                            LocalDate.parse(taskStrings[3]),
+                            LocalDate.parse(taskStrings[4]));
+                    if (taskStrings[1].equals("1")) {
+                        newEvent.markDone();
+                    }
                     tasks.add(newEvent);
                     break;
                 default:
@@ -188,7 +219,7 @@ public class KingStorage {
      * @param row Row number of line to be edited / replaced.
      * @param sa  Action to be done on the line in the database file.
      */
-    private void replaceLine(int row, STORAGE_ACTIONS sa) {
+    private void replaceLine(int row, StorageActions sa) {
         try {
             Path path = Paths.get(databasePath);
             ArrayList<String> allLines = new ArrayList<>(Files.readAllLines(path));
@@ -206,6 +237,7 @@ public class KingStorage {
                     break;
                 case DELETE_TASK:
                     allLines.remove(row);
+                    break;
                 default:
                     break;
                 }
