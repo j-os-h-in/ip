@@ -1,8 +1,8 @@
 package king.task;
 
-import king.storage.KingStorage;
-
 import java.util.ArrayList;
+
+import king.storage.KingStorage;
 
 /**
  * Tasklist for the King to help with task management and storage
@@ -16,8 +16,11 @@ public class KingTaskList {
      */
     public KingTaskList() {
         ArrayList<Task> tasks = kingStorage.loadFile();
-        if (tasks == null) this.tasks = new ArrayList<>();
-        else this.tasks = tasks;
+        if (tasks == null) {
+            this.tasks = new ArrayList<>();
+        } else {
+            this.tasks = tasks;
+        }
     }
 
     /**
@@ -27,7 +30,9 @@ public class KingTaskList {
      */
     public KingTaskList(boolean reset) {
         this();
-        if (reset) resetList();
+        if (reset) {
+            resetList();
+        }
     }
 
     /**

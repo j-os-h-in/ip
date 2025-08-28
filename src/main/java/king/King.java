@@ -1,5 +1,9 @@
 package king;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
+
 import king.parser.KingParser;
 import king.task.Deadline;
 import king.task.Event;
@@ -7,10 +11,9 @@ import king.task.KingTaskList;
 import king.task.Todo;
 import king.ui.KingUI;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Scanner;
-
+/**
+ * King bot class that manages the parser, task list and UI
+ */
 public class King {
     public static void main(String[] args) {
         // Initialise UI, Storage, Parser and TaskList
@@ -31,63 +34,52 @@ public class King {
             while (!kingParser.checkParser(KingParser.Commands.BYE)) {
                 kingUI.showLine();
                 try {
-                    // help command - lists the possible commands you can give to the king.King bot
                     if (kingParser.checkParser(KingParser.Commands.HELP)) {
+                        // help command - lists the possible commands you can give to the king.King bot
                         kingUI.showHelp();
-                    }
-
-                    // list command - lists all the current tasks in your task list
-                    else if (kingParser.checkParser(KingParser.Commands.LIST)) {
+                    } else if (kingParser.checkParser(KingParser.Commands.LIST)) {
+                        // list command - lists all the current tasks in your task list
                         kingUI.showAllList(kingTaskList.getTasks());
-                    }
-
-                    // due command - lists all tasks on a certain due date
-                    else if (kingParser.checkParser(KingParser.Commands.DUE)) {
-                        kingUI.showDueList(kingTaskList.getTasks(), LocalDate.parse(kingParser.getDueMatcher().group(1)));
-                    }
-
-                    // find command - finds all tasks with a certain name
-                    else if (kingParser.checkParser(KingParser.Commands.FIND)) {
+                    } else if (kingParser.checkParser(KingParser.Commands.DUE)) {
+                        // due command - lists all tasks on a certain due date
+                        kingUI.showDueList(
+                                kingTaskList.getTasks(),
+                                LocalDate.parse(kingParser.getDueMatcher().group(1)));
+                    } else if (kingParser.checkParser(KingParser.Commands.FIND)) {
+                        // find command - finds all tasks with a certain name
                         kingUI.showFindList(kingTaskList.getTasks(), kingParser.getFindMatcher().group(1));
-                    }
-
-                    // todo command - creates a new todo task
-                    else if (kingParser.checkParser(KingParser.Commands.TODO)) {
+                    } else if (kingParser.checkParser(KingParser.Commands.TODO)) {
+                        // todo command - creates a new todo task
                         Todo newTask = new Todo(kingParser.getTodoMatcher().group(1));
                         kingTaskList.addTask(newTask);
                         kingUI.showTaskCreate(newTask, kingTaskList.getSize());
-                    }
-
-                    // deadline command - creates a new deadline task
-                    else if (kingParser.checkParser(KingParser.Commands.DEADLINE)) {
-                        Deadline newTask = new Deadline(kingParser.getDeadlineMatcher().group(1), LocalDate.parse(kingParser.getDeadlineMatcher().group(2)));
+                    } else if (kingParser.checkParser(KingParser.Commands.DEADLINE)) {
+                        // deadline command - creates a new deadline task
+                        Deadline newTask = new Deadline(
+                                kingParser.getDeadlineMatcher().group(1),
+                                LocalDate.parse(kingParser.getDeadlineMatcher().group(2)));
                         kingTaskList.addTask(newTask);
                         kingUI.showTaskCreate(newTask, kingTaskList.getSize());
-                    }
-
-                    // event command - creates a new event task
-                    else if (kingParser.checkParser(KingParser.Commands.EVENT)) {
-                        Event newTask = new Event(kingParser.getEventMatcher().group(1), LocalDate.parse(kingParser.getEventMatcher().group(2)), LocalDate.parse(kingParser.getEventMatcher().group(3)));
+                    } else if (kingParser.checkParser(KingParser.Commands.EVENT)) {
+                        // event command - creates a new event task
+                        Event newTask = new Event(
+                                kingParser.getEventMatcher().group(1),
+                                LocalDate.parse(kingParser.getEventMatcher().group(2)),
+                                LocalDate.parse(kingParser.getEventMatcher().group(3)));
                         kingTaskList.addTask(newTask);
                         kingUI.showTaskCreate(newTask, kingTaskList.getSize());
-                    }
-
-                    // mark command - marks a task complete
-                    else if (kingParser.checkParser(KingParser.Commands.MARK)) {
+                    } else if (kingParser.checkParser(KingParser.Commands.MARK)) {
+                        // mark command - marks a task complete
                         int idx = Integer.parseInt(kingParser.getMarkMatcher().group(1)) - 1;
                         kingTaskList.markDone(idx);
                         kingUI.showMark(kingTaskList.getTask(idx));
-                    }
-
-                    // unmark command - marks a task incomplete
-                    else if (kingParser.checkParser(KingParser.Commands.UNMARK)) {
+                    } else if (kingParser.checkParser(KingParser.Commands.UNMARK)) {
+                        // unmark command - marks a task incomplete
                         int idx = Integer.parseInt(kingParser.getUnmarkMatcher().group(1)) - 1;
                         kingTaskList.unmarkDone(idx);
                         kingUI.showUnmark(kingTaskList.getTask(idx));
-                    }
-
-                    // delete command - deletes a task
-                    else if (kingParser.checkParser(KingParser.Commands.DELETE)) {
+                    } else if (kingParser.checkParser(KingParser.Commands.DELETE)) {
+                        // delete command - deletes a task
                         int idx = Integer.parseInt(kingParser.getDeleteMatcher().group(1)) - 1;
                         kingUI.showDelete(kingTaskList.deleteTask(idx), kingTaskList.getSize());
                     } else {

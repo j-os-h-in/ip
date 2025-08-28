@@ -1,14 +1,17 @@
 package king.parser;
 
-import king.KingException;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import king.KingException;
 
 /**
  * Parser for the King that helps with checking which commands have been called based on user input
  */
 public class KingParser {
+    /**
+     * Enumeration of all possible commands for King bot
+     */
     public enum Commands {
         HELP,
         LIST,
@@ -34,7 +37,17 @@ public class KingParser {
     private final String unmarkRegex = "^unmark(?:\\s+(\\d*))?$";
     private final String deleteRegex = "^delete(?:\\s+(\\d*))?$";
     private final String endRegex = "^bye$";
-    private Matcher helpMatcher, listMatcher, dueMatcher, findMatcher, todoMatcher, deadlineMatcher, eventMatcher, markMatcher, unmarkMatcher, deleteMatcher, endMatcher;
+    private Matcher helpMatcher;
+    private Matcher listMatcher;
+    private Matcher dueMatcher;
+    private Matcher findMatcher;
+    private Matcher todoMatcher;
+    private Matcher deadlineMatcher;
+    private Matcher eventMatcher;
+    private Matcher markMatcher;
+    private Matcher unmarkMatcher;
+    private Matcher deleteMatcher;
+    private Matcher endMatcher;
 
     private String input;
 
@@ -90,28 +103,33 @@ public class KingParser {
             return listMatcher.matches();
         case DUE:
             if (dueMatcher.matches()) {
-                if (dueMatcher.group(1) == null)
+                if (dueMatcher.group(1) == null) {
                     throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE);
+                }
                 return true;
             }
             return false;
         case FIND:
             if (findMatcher.matches()) {
-                if (findMatcher.group(1) == null)
+                if (findMatcher.group(1) == null) {
                     throw new KingException(KingException.ErrorMessage.FIND_MISSING_SEARCH);
+                }
                 return true;
             }
+            return false;
         case TODO:
             if (todoMatcher.matches()) {
-                if (todoMatcher.group(1) == null)
+                if (todoMatcher.group(1) == null) {
                     throw new KingException(KingException.ErrorMessage.MISSING_TASK_DESCRIPTION);
+                }
                 return true;
             }
             return false;
         case DEADLINE:
             if (deadlineMatcher.matches()) {
-                if (deadlineMatcher.group(2) == null)
+                if (deadlineMatcher.group(2) == null) {
                     throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE);
+                }
                 return true;
             }
             return false;
@@ -129,22 +147,25 @@ public class KingParser {
             return false;
         case MARK:
             if (markMatcher.matches()) {
-                if (markMatcher.group(1) == null)
+                if (markMatcher.group(1) == null) {
                     throw new KingException(KingException.ErrorMessage.MARK_MISSING_INDEX);
+                }
                 return true;
             }
             return false;
         case UNMARK:
             if (unmarkMatcher.matches()) {
-                if (unmarkMatcher.group(1) == null)
+                if (unmarkMatcher.group(1) == null) {
                     throw new KingException(KingException.ErrorMessage.UNMARK_MISSING_INDEX);
+                }
                 return true;
             }
             return false;
         case DELETE:
             if (deleteMatcher.matches()) {
-                if (deleteMatcher.group(1) == null)
+                if (deleteMatcher.group(1) == null) {
                     throw new KingException(KingException.ErrorMessage.DELETE_MISSING_INDEX);
+                }
                 return true;
             }
             return false;

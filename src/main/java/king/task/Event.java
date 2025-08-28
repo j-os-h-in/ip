@@ -1,9 +1,9 @@
 package king.task;
 
-import king.KingException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import king.KingException;
 
 /**
  * Task with from date and to date
@@ -79,6 +79,8 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + " to: " + to.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ")";
+        return "[E]" + super.toString()
+                + " (from: " + from.format(DateTimeFormatter.ofPattern("d MMM yyyy"))
+                + " to: " + to.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ")";
     }
 }

@@ -1,12 +1,13 @@
 package king.parser;
 
-import king.KingException;
-import king.storage.KingStorage;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import king.KingException;
 
 public class KingParserTest {
     private KingParser kingParser;
@@ -17,49 +18,49 @@ public class KingParserTest {
     }
 
     @Test
-    public void help_1_success() throws KingException {
+    public void help1_success() throws KingException {
         kingParser.setNewInput("help");
         assertTrue(kingParser.checkParser(KingParser.Commands.HELP));
     }
 
     @Test
-    public void help_2_success() throws KingException {
+    public void help2_success() throws KingException {
         kingParser.setNewInput("   help   ");
         assertTrue(kingParser.checkParser(KingParser.Commands.HELP));
     }
 
     @Test
-    public void help_1_fail() throws KingException {
+    public void help1_fail() throws KingException {
         kingParser.setNewInput("   help   me ");
         assertFalse(kingParser.checkParser(KingParser.Commands.HELP));
     }
 
     @Test
-    public void list_1_success() throws KingException {
+    public void list1_success() throws KingException {
         kingParser.setNewInput("list");
         assertTrue(kingParser.checkParser(KingParser.Commands.LIST));
     }
 
     @Test
-    public void list_2_success() throws KingException {
+    public void list2_success() throws KingException {
         kingParser.setNewInput("   list     ");
         assertTrue(kingParser.checkParser(KingParser.Commands.LIST));
     }
 
     @Test
-    public void list_1_fail() throws KingException {
+    public void list1_fail() throws KingException {
         kingParser.setNewInput("   list  x  ");
         assertFalse(kingParser.checkParser(KingParser.Commands.LIST));
     }
 
     @Test
-    public void due_1_success() throws KingException {
+    public void due1_success() throws KingException {
         kingParser.setNewInput("   due    2025-23-10 ");
         assertTrue(kingParser.checkParser(KingParser.Commands.DUE));
     }
 
     @Test
-    public void due_1_fail() throws KingException {
+    public void due1_fail() throws KingException {
         kingParser.setNewInput("   due     ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.DUE);
@@ -67,13 +68,13 @@ public class KingParserTest {
     }
 
     @Test
-    public void todo_1_success() throws KingException {
+    public void todo1_success() throws KingException {
         kingParser.setNewInput("   todo    Todo Task ");
         assertTrue(kingParser.checkParser(KingParser.Commands.TODO));
     }
 
     @Test
-    public void todo_1_fail() throws KingException {
+    public void todo1_fail() throws KingException {
         kingParser.setNewInput("      todo     ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.TODO);
@@ -81,13 +82,13 @@ public class KingParserTest {
     }
 
     @Test
-    public void deadline_1_success() throws KingException {
+    public void deadline1_success() throws KingException {
         kingParser.setNewInput("deadline Deadline Task /by 2025-10-23 ");
         assertTrue(kingParser.checkParser(KingParser.Commands.DEADLINE));
     }
 
     @Test
-    public void deadline_1_fail() throws KingException {
+    public void deadline1_fail() throws KingException {
         kingParser.setNewInput("      deadline     ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.DEADLINE);
@@ -95,7 +96,7 @@ public class KingParserTest {
     }
 
     @Test
-    public void deadline_2_fail() throws KingException {
+    public void deadline2_fail() throws KingException {
         kingParser.setNewInput("      deadline   Deadline Task  ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.DEADLINE);
@@ -103,7 +104,7 @@ public class KingParserTest {
     }
 
     @Test
-    public void deadline_3_fail() throws KingException {
+    public void deadline3_fail() throws KingException {
         kingParser.setNewInput("      deadline   Deadline Task /by  ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.DEADLINE);
@@ -111,13 +112,13 @@ public class KingParserTest {
     }
 
     @Test
-    public void event_1_success() throws KingException {
+    public void event1_success() throws KingException {
         kingParser.setNewInput("event Event Task /from 2025-10-23 /to 2025-10-31 ");
         assertTrue(kingParser.checkParser(KingParser.Commands.EVENT));
     }
 
     @Test
-    public void event_1_fail() throws KingException {
+    public void event1_fail() throws KingException {
         kingParser.setNewInput("      event     ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.EVENT);
@@ -125,7 +126,7 @@ public class KingParserTest {
     }
 
     @Test
-    public void event_2_fail() throws KingException {
+    public void event2_fail() throws KingException {
         kingParser.setNewInput("      event   Event Task  ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.EVENT);
@@ -133,7 +134,7 @@ public class KingParserTest {
     }
 
     @Test
-    public void event_3_fail() throws KingException {
+    public void event3_fail() throws KingException {
         kingParser.setNewInput("      event   Event Task /from  ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.EVENT);
@@ -141,7 +142,7 @@ public class KingParserTest {
     }
 
     @Test
-    public void event_4_fail() throws KingException {
+    public void event4_fail() throws KingException {
         kingParser.setNewInput("      event   Event Task /from  2025-10-23 /to");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.EVENT);
@@ -149,14 +150,14 @@ public class KingParserTest {
     }
 
     @Test
-    public void mark_1_success() throws KingException {
+    public void mark1_success() throws KingException {
         kingParser.setNewInput("   mark 3 ");
         assertTrue(kingParser.checkParser(KingParser.Commands.MARK));
     }
 
 
     @Test
-    public void mark_1_fail() throws KingException {
+    public void mark1_fail() throws KingException {
         kingParser.setNewInput("  mark ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.MARK);
@@ -164,13 +165,13 @@ public class KingParserTest {
     }
 
     @Test
-    public void unmark_1_success() throws KingException {
+    public void unmark1_success() throws KingException {
         kingParser.setNewInput("   unmark 3 ");
         assertTrue(kingParser.checkParser(KingParser.Commands.UNMARK));
     }
 
     @Test
-    public void unmark_1_fail() throws KingException {
+    public void unmark1_fail() throws KingException {
         kingParser.setNewInput("  unmark ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.UNMARK);
@@ -178,14 +179,14 @@ public class KingParserTest {
     }
 
     @Test
-    public void delete_1_success() throws KingException {
+    public void delete1_success() throws KingException {
         kingParser.setNewInput("   delete 3 ");
         assertTrue(kingParser.checkParser(KingParser.Commands.DELETE));
     }
 
 
     @Test
-    public void delete_1_fail() throws KingException {
+    public void delete1_fail() throws KingException {
         kingParser.setNewInput("  delete ");
         assertThrows(KingException.class, () -> {
             kingParser.checkParser(KingParser.Commands.DELETE);
@@ -193,9 +194,8 @@ public class KingParserTest {
     }
 
     @Test
-    public void bye_1_success() throws KingException {
+    public void bye1_success() throws KingException {
         kingParser.setNewInput("   bye");
         assertTrue(kingParser.checkParser(KingParser.Commands.BYE));
     }
-
 }
