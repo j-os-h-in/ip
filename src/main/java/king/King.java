@@ -17,10 +17,10 @@ import king.ui.KingUI;
  * King bot class that manages the parser, task list and UI
  */
 public class King {
-    public static void main(String[] args) {
-        Application.launch(KingGui.class, args);
 
+    public static void main(String[] args) {
         // Initialise UI, Storage, Parser and TaskList
+        Application.launch(KingGui.class, args);
         KingUI kingUI = new KingUI();
         KingParser kingParser = new KingParser("");
         KingTaskList kingTaskList = new KingTaskList();
