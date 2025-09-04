@@ -28,6 +28,7 @@ public class KingUI {
         return " Need help? Here is the list of commands you can use to use this chat bot!\n"
                 + " list - Gets the list of tasks you currently have\n"
                 + " due [YYYY-MM-DD] - Gets tasks due on specific date\n"
+                + " find [string1] [string2] ... - Finds tasks matching strings\n"
                 + " todo [task name] - Creates a new todo task\n"
                 + " deadline [task name] /by [YYYY-MM-DD] - Creates a new deadline task with a time to complete by\n"
                 + " event [task name] /from [YYYY-MM-DD] /to [YYYY-MM-DD] - Creates a new event based on a period\n"
@@ -74,14 +75,16 @@ public class KingUI {
     /**
      * Shows specific tasks matching find command
      *
-     * @param list   List of all tasks
-     * @param search Search string for tasks
+     * @param list     List of all tasks
+     * @param searches Search strings for tasks
      */
-    public String showFindList(ArrayList<Task> list, String search) {
+    public String showFindList(ArrayList<Task> list, String... searches) {
         String response = "Here are the matching tasks in your list:\n";
         for (int i = 1; i <= list.size(); i++) {
-            if (list.get(i - 1).getDescription().contains(search)) {
-                response = response.concat(i + ". " + list.get(i - 1) + "\n");
+            for (String search : searches) {
+                if (list.get(i - 1).getDescription().contains(search)) {
+                    response = response.concat(i + ". " + list.get(i - 1) + "\n");
+                }
             }
         }
         return response;
