@@ -17,38 +17,25 @@ public class KingUI {
     /**
      * Show introduction message at start of conversation
      */
-    public void showIntroduction() {
-        showLine();
-        System.out.println(spacer + "Hello! I'm King!");
-        System.out.println(spacer + "What can I do for you? Use `help` to view all my commands.");
-        showLine();
+    public String showIntroduction() {
+        return ("Hello! I'm King!\nWhat can I do for you? Use `help` to view all my commands.");
     }
 
     /**
      * Show help message for help command
      */
-    public void showHelp() {
-        System.out.println(spacer + " Need help? Here is the list of commands you can use to use this chat bot!");
-        System.out.println(spacer + " list                                                  "
-                + "- Gets the list of tasks you currently have");
-        System.out.println(spacer + " due [YYYY-MM-DD]                                      "
-                + "- Gets tasks due on specific date");
-        System.out.println(spacer + " todo [task name]                                      "
-                + "- Creates a new todo task");
-        System.out.println(spacer + " deadline [task name] /by [YYYY-MM-DD]                 "
-                + "- Creates a new deadline task with a time to complete by");
-        System.out.println(spacer + " event [task name] /from [YYYY-MM-DD] /to [YYYY-MM-DD] "
-                + "- Creates a new event based on a period");
-        System.out.println(spacer + " mark [index]                                          "
-                + "- Marks the task at the index to be complete");
-        System.out.println(spacer + " unmark [index]                                        "
-                + "- Marks the task at the index to be incomplete");
-        System.out.println(spacer + " delete [index]                                        "
-                + "- Deletes the task at the index");
-        System.out.println(spacer + " bye                                                   "
-                + "- Ends the program");
-        System.out.println(spacer + " help                                                  "
-                + "- Provides the list of commands to query the bot");
+    public String showHelp() {
+        return " Need help? Here is the list of commands you can use to use this chat bot!\n"
+                + " list - Gets the list of tasks you currently have\n"
+                + " due [YYYY-MM-DD] - Gets tasks due on specific date\n"
+                + " todo [task name] - Creates a new todo task\n"
+                + " deadline [task name] /by [YYYY-MM-DD] - Creates a new deadline task with a time to complete by\n"
+                + " event [task name] /from [YYYY-MM-DD] /to [YYYY-MM-DD] - Creates a new event based on a period\n"
+                + " mark [index] - Marks the task at the index to be complete\n"
+                + " unmark [index] - Marks the task at the index to be incomplete\n"
+                + " delete [index] - Deletes the task at the index\n"
+                + " bye - Ends the program\n"
+                + " help - Provides the list of commands to query the bot";
     }
 
     /**
@@ -56,11 +43,12 @@ public class KingUI {
      *
      * @param list List of all tasks
      */
-    public void showAllList(ArrayList<Task> list) {
-        System.out.println(spacer + " Here are the tasks in your list:");
+    public String showAllList(ArrayList<Task> list) {
+        String response = " Here are the tasks in your list:\n";
         for (int i = 1; i <= list.size(); i++) {
-            System.out.println(spacer + " " + i + ". " + list.get(i - 1));
+            response = response.concat(i + ". " + list.get(i - 1) + "\n");
         }
+        return response;
     }
 
     /**
@@ -69,17 +57,18 @@ public class KingUI {
      * @param list List of all tasks
      * @param date Date of task due
      */
-    public void showDueList(ArrayList<Task> list, LocalDate date) {
-        System.out.println(spacer + " Here are the tasks due on:"
-                + date.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ".");
+    public String showDueList(ArrayList<Task> list, LocalDate date) {
+        String response = " Here are the tasks due on:"
+                + date.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ".\n";
         for (int i = 1; i <= list.size(); i++) {
             if (list.get(i - 1).getType() == Task.Type.DEADLINE) {
                 Deadline deadlineTask = (Deadline) list.get(i - 1);
                 if (deadlineTask.getBy().equals(date)) {
-                    System.out.println(spacer + " " + i + ". " + list.get(i - 1));
+                    response = response.concat(i + ". " + list.get(i - 1) + "\n");
                 }
             }
         }
+        return response;
     }
 
     /**
@@ -88,13 +77,14 @@ public class KingUI {
      * @param list   List of all tasks
      * @param search Search string for tasks
      */
-    public void showFindList(ArrayList<Task> list, String search) {
-        System.out.println(spacer + " Here are the matching tasks in your list:");
+    public String showFindList(ArrayList<Task> list, String search) {
+        String response = "Here are the matching tasks in your list:\n";
         for (int i = 1; i <= list.size(); i++) {
             if (list.get(i - 1).getDescription().contains(search)) {
-                System.out.println(spacer + " " + i + ". " + list.get(i - 1));
+                response = response.concat(i + ". " + list.get(i - 1) + "\n");
             }
         }
+        return response;
     }
 
 
@@ -104,10 +94,11 @@ public class KingUI {
      * @param task Task to be created
      * @param size Updated size of task list
      */
-    public void showTaskCreate(Task task, int size) {
-        System.out.println(spacer + " Ok! I've added this task:");
-        System.out.println(spacer + "   " + task);
-        System.out.println(spacer + " Now you have " + size + " tasks in the list.");
+    public String showTaskCreate(Task task, int size) {
+        String response = "Ok! I've added this task:\n";
+        response = response.concat(task.toString() + "\n");
+        response = response.concat("Now you have " + size + " tasks in the list.");
+        return response;
     }
 
     /**
@@ -115,9 +106,10 @@ public class KingUI {
      *
      * @param task Task marked
      */
-    public void showMark(Task task) {
-        System.out.println(spacer + " Nice! I've marked this task as done:");
-        System.out.println(spacer + "   " + task);
+    public String showMark(Task task) {
+        String response = "Nice! I've marked this task as done:\n";
+        response = response.concat(task.toString());
+        return response;
     }
 
     /**
@@ -125,9 +117,10 @@ public class KingUI {
      *
      * @param task Task unmarked
      */
-    public void showUnmark(Task task) {
-        System.out.println(spacer + " OK :( I've marked this task as not done yet");
-        System.out.println(spacer + "   " + task);
+    public String showUnmark(Task task) {
+        String response = "OK :( I've marked this task as not done yet\n";
+        response = response.concat(task.toString());
+        return response;
     }
 
     /**
@@ -136,55 +129,52 @@ public class KingUI {
      * @param task Task deleted
      * @param size Updated size of task list
      */
-    public void showDelete(Task task, int size) {
-        System.out.println(spacer + " Noted! I've deleted this task:");
-        System.out.println(spacer + "   " + task);
-        System.out.println(spacer + " Now you have " + size + " tasks in the list.");
+    public String showDelete(Task task, int size) {
+        String response = "Noted! I've deleted this task:\n";
+        response = response.concat(task.toString()) + "\n";
+        response = response.concat("Now you have " + size + " tasks in the list.");
+        return response;
     }
 
     /**
      * Show bye message for bye command
      */
-    public void showBye() {
-        showLine();
-        System.out.println(spacer + " BYE BYE!! Hope to see you again soon!");
-        showLine();
+    public String showBye() {
+        return "BYE BYE!! Hope to see you again soon!";
     }
 
     /**
      * Show message for invalid command
      */
-    public void showInvalidCommand() {
-        System.out.println(spacer + " Error! Invalid command.");
+    public String showInvalidCommand() {
+        return "Error! Invalid command.";
     }
 
     /**
      * Show message for invalid task
+     *
+     * @return String error message
      */
-    public void showInvalidTask() {
-        System.out.println(spacer + " Error! Task does not exist.");
+    public String showInvalidTask() {
+        return "Error! Task does not exist.";
     }
 
     /**
      * Show message for invalid date time
+     *
+     * @return String error message
      */
-    public void showInvalidDateTime() {
-        System.out.println(spacer + " Error! Date time format specified is incorrect. Use format YYYY-MM-DD.");
+    public String showInvalidDateTime() {
+        return "Error! Date time format specified is incorrect. Use format YYYY-MM-DD.";
     }
 
     /**
      * Show message for KingException
      *
      * @param e Exception given for error in user IO
+     * @return String error message
      */
-    public void showError(KingException e) {
-        System.out.println(spacer + e.getMessage());
-    }
-
-    /**
-     * Show line for separator
-     */
-    public void showLine() {
-        System.out.println(spacer + "____________________________________________________________");
+    public String showError(KingException e) {
+        return e.getMessage();
     }
 }
