@@ -20,7 +20,18 @@ public class King {
     private KingTaskList kingTaskList = new KingTaskList();
 
     /**
+     * Generates a bot introduction
+     *
+     * @return Generated bot introduction on start of bot
+     */
+    public String getIntroduction() {
+        return kingUI.showIntroduction();
+    }
+
+    /**
      * Generates a response for the user's chat message.
+     *
+     * @return Generated response to user command
      */
     public String getResponse(String input) {
         kingParser.setNewInput(input);
@@ -38,7 +49,7 @@ public class King {
                         LocalDate.parse(kingParser.getDueMatcher().group(1)));
             } else if (kingParser.checkParser(KingParser.Commands.FIND)) {
                 // find command - finds all tasks with a certain name
-                return kingUI.showFindList(kingTaskList.getTasks(), kingParser.getFindMatcher().group(1));
+                return kingUI.showFindList(kingTaskList.getTasks(), kingParser.getFindMatcher().group(1).split(" "));
             } else if (kingParser.checkParser(KingParser.Commands.TODO)) {
                 // todo command - creates a new todo task
                 Todo newTask = new Todo(kingParser.getTodoMatcher().group(1));
@@ -87,18 +98,4 @@ public class King {
             return kingUI.showInvalidDateTime();
         }
     }
-
-//    public static void main(String[] args) {
-//
-//        // Show introduction
-//        kingUI.showIntroduction();
-//
-//        // Initialise input scanner
-//        Scanner scanner = new Scanner(System.in);
-//        String text = scanner.nextLine().strip();
-//        kingParser.setNewInput(text);
-//
-//        // Loop to get user input
-//
-//    }
 }
