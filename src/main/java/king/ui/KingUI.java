@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import king.KingException;
-import king.task.Deadline;
 import king.task.Task;
 
 /**
@@ -59,17 +58,17 @@ public class KingUI {
      * @param date Date of task due
      */
     public String showDueList(ArrayList<Task> list, LocalDate date) {
-        String response = " Here are the tasks due on:"
-                + date.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ".\n";
-        for (int i = 1; i <= list.size(); i++) {
-            if (list.get(i - 1).getType() == Task.Type.DEADLINE) {
-                Deadline deadlineTask = (Deadline) list.get(i - 1);
-                if (deadlineTask.getBy().equals(date)) {
-                    response = response.concat(i + ". " + list.get(i - 1) + "\n");
-                }
-            }
-        }
-        return response;
+        StringBuilder response = new StringBuilder(" Here are the tasks due on:"
+                + date.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ".\n");
+        list.stream()
+                .filter(task -> task.getType() == Task.Type.DEADLINE)
+                .forEach(task ->
+                        response.append(list.indexOf(task) + 1)
+                                .append(". ")
+                                .append(task)
+                                .append("\n"));
+
+        return response.toString();
     }
 
     /**
@@ -79,15 +78,17 @@ public class KingUI {
      * @param searches Search strings for tasks
      */
     public String showFindList(ArrayList<Task> list, String... searches) {
-        String response = "Here are the matching tasks in your list:\n";
-        for (int i = 1; i <= list.size(); i++) {
-            for (String search : searches) {
-                if (list.get(i - 1).getDescription().contains(search)) {
-                    response = response.concat(i + ". " + list.get(i - 1) + "\n");
-                }
-            }
-        }
-        return response;
+        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
+        list.stream()
+                .filter(task ->
+                        java.util.Arrays.stream(searches)
+                                .anyMatch(search -> task.getDescription().contains(search)))
+                .forEach(task ->
+                        response.append(list.indexOf(task) + 1)
+                                .append(". ")
+                                .append(task)
+                                .append("\n"));
+        return response.toString();
     }
 
 
