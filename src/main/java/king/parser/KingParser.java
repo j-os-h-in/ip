@@ -96,84 +96,104 @@ public class KingParser {
      * @throws KingException If matching group is missing certain parts, throw IOError KingException.
      */
     public boolean checkParser(Commands command) throws KingException {
-        switch (command) {
-        case HELP:
-            return helpMatcher.matches();
-        case LIST:
-            return listMatcher.matches();
-        case DUE:
-            if (dueMatcher.matches()) {
-                if (dueMatcher.group(1) == null) {
-                    throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE);
-                }
-                return true;
-            }
-            return false;
-        case FIND:
-            if (findMatcher.matches()) {
-                if (findMatcher.group(1) == null) {
-                    throw new KingException(KingException.ErrorMessage.FIND_MISSING_SEARCH);
-                }
-                return true;
-            }
-            return false;
-        case TODO:
-            if (todoMatcher.matches()) {
-                if (todoMatcher.group(1) == null) {
-                    throw new KingException(KingException.ErrorMessage.MISSING_TASK_DESCRIPTION);
-                }
-                return true;
-            }
-            return false;
-        case DEADLINE:
-            if (deadlineMatcher.matches()) {
-                if (deadlineMatcher.group(2) == null) {
-                    throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE);
-                }
-                return true;
-            }
-            return false;
-        case EVENT:
-            if (eventMatcher.matches()) {
-                if (eventMatcher.group(2) == null && eventMatcher.group(3) == null) {
-                    throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_TO_DATE);
-                } else if (eventMatcher.group(2) == null) {
-                    throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_DATE);
-                } else if (eventMatcher.group(3) == null) {
-                    throw new KingException(KingException.ErrorMessage.EVENT_MISSING_TO_DATE);
-                }
-                return true;
-            }
-            return false;
-        case MARK:
-            if (markMatcher.matches()) {
-                if (markMatcher.group(1) == null) {
-                    throw new KingException(KingException.ErrorMessage.MARK_MISSING_INDEX);
-                }
-                return true;
-            }
-            return false;
-        case UNMARK:
-            if (unmarkMatcher.matches()) {
-                if (unmarkMatcher.group(1) == null) {
-                    throw new KingException(KingException.ErrorMessage.UNMARK_MISSING_INDEX);
-                }
-                return true;
-            }
-            return false;
-        case DELETE:
-            if (deleteMatcher.matches()) {
-                if (deleteMatcher.group(1) == null) {
-                    throw new KingException(KingException.ErrorMessage.DELETE_MISSING_INDEX);
-                }
-                return true;
-            }
-            return false;
-        case BYE:
-            return endMatcher.matches();
-        default:
+        return switch (command) {
+            case HELP -> helpMatcher.matches();
+            case LIST -> listMatcher.matches();
+            case DUE -> checkDue();
+            case FIND -> checkFind();
+            case TODO -> checkTodo();
+            case DEADLINE -> checkDeadline();
+            case EVENT -> checkEvent();
+            case MARK -> checkMark();
+            case UNMARK -> checkUnmark();
+            case DELETE -> checkDelete();
+            case BYE -> endMatcher.matches();
+            default -> false;
+        };
+    }
+
+    private boolean checkDue() throws KingException {
+        if (!dueMatcher.matches()) {
             return false;
         }
+        if (dueMatcher.group(1) == null) {
+            throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE);
+        }
+        return true;
+    }
+
+    private boolean checkFind() throws KingException {
+        if (!findMatcher.matches()) {
+            return false;
+        }
+        if (findMatcher.group(1) == null) {
+            throw new KingException(KingException.ErrorMessage.FIND_MISSING_SEARCH);
+        }
+        return true;
+    }
+
+    private boolean checkTodo() throws KingException {
+        if (!todoMatcher.matches()) {
+            return false;
+        }
+        if (todoMatcher.group(1) == null) {
+            throw new KingException(KingException.ErrorMessage.MISSING_TASK_DESCRIPTION);
+        }
+        return true;
+    }
+
+    private boolean checkDeadline() throws KingException {
+        if (!deadlineMatcher.matches()) {
+            return false;
+        }
+        if (deadlineMatcher.group(2) == null) {
+            throw new KingException(KingException.ErrorMessage.DEADLINE_MISSING_DEADLINE);
+        }
+        return true;
+    }
+
+    private boolean checkEvent() throws KingException {
+        if (!eventMatcher.matches()) {
+            return false;
+        }
+        if (eventMatcher.group(2) == null && eventMatcher.group(3) == null) {
+            throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_TO_DATE);
+        } else if (eventMatcher.group(2) == null) {
+            throw new KingException(KingException.ErrorMessage.EVENT_MISSING_FROM_DATE);
+        } else if (eventMatcher.group(3) == null) {
+            throw new KingException(KingException.ErrorMessage.EVENT_MISSING_TO_DATE);
+        }
+        return true;
+    }
+
+    private boolean checkMark() throws KingException {
+        if (!markMatcher.matches()) {
+            return false;
+        }
+        if (markMatcher.group(1) == null) {
+            throw new KingException(KingException.ErrorMessage.MARK_MISSING_INDEX);
+        }
+        return true;
+    }
+
+    private boolean checkUnmark() throws KingException {
+        if (unmarkMatcher.matches()) {
+            return false;
+        }
+        if (unmarkMatcher.group(1) == null) {
+            throw new KingException(KingException.ErrorMessage.UNMARK_MISSING_INDEX);
+        }
+        return true;
+    }
+
+    private boolean checkDelete() throws KingException {
+        if (deleteMatcher.matches()) {
+            return false;
+        }
+        if (deleteMatcher.group(1) == null) {
+            throw new KingException(KingException.ErrorMessage.DELETE_MISSING_INDEX);
+        }
+        return true;
     }
 
     /**

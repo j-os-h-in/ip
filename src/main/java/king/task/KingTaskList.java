@@ -8,8 +8,8 @@ import king.storage.KingStorage;
  * Tasklist for the King to help with task management and storage
  */
 public class KingTaskList {
-    private ArrayList<Task> tasks;
-    private KingStorage kingStorage = new KingStorage();
+    private final ArrayList<Task> tasks;
+    private final KingStorage kingStorage = new KingStorage();
 
     /**
      * Instantiates a task list with data loaded from the database
