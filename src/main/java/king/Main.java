@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private King king = new King();
+    private final King king = new King();
 
     @Override
     public void start(Stage stage) {

@@ -23,7 +23,8 @@ public class KingException extends IOException {
         UNMARK_MISSING_INDEX("Error! No unmark index specified!"),
         DELETE_MISSING_INDEX("Error! No delete index specified!"),
 
-        INVALID_DATABASE("[KingStorage] Invalid data in database.");
+        INVALID_DATABASE("[KingStorage] Invalid data in database."),
+        CORRUPTED_DATABASE("[KingStorage] Database may be corrupted. Your tasks created will not be saved.");
 
         private final String message;
 
