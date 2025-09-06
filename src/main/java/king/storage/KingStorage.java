@@ -76,16 +76,19 @@ public class KingStorage {
             FileWriter fw = new FileWriter(databasePath, true);
             switch (task.getType()) {
             case TODO:
+                assert task instanceof Todo;
                 Todo todo = (Todo) task;
                 fw.write("T | " + (todo.getComplete() ? 1 : 0) + " | " + todo.getDescription() + "\n");
                 break;
             case DEADLINE:
+                assert task instanceof Deadline;
                 Deadline deadline = (Deadline) task;
                 fw.write("D | " + (deadline.getComplete() ? 1 : 0)
                         + " | " + deadline.getDescription() + " | "
                         + deadline.getBy() + "\n");
                 break;
             case EVENT:
+                assert task instanceof Event;
                 Event event = (Event) task;
                 fw.write("E | " + (event.getComplete() ? 1 : 0)
                         + " | " + event.getDescription()
@@ -110,6 +113,7 @@ public class KingStorage {
         if (!database.exists()) {
             createFile();
         }
+        assert database.exists();
         replaceLine(index, StorageActions.MARK_DONE);
     }
 
@@ -122,6 +126,7 @@ public class KingStorage {
         if (!database.exists()) {
             createFile();
         }
+        assert database.exists();
         replaceLine(index, StorageActions.UNMARK_DONE);
     }
 
@@ -134,6 +139,7 @@ public class KingStorage {
         if (!database.exists()) {
             createFile();
         }
+        assert database.exists();
         replaceLine(index, StorageActions.DELETE_TASK);
     }
 
@@ -146,6 +152,7 @@ public class KingStorage {
         if (!database.exists()) {
             return null;
         }
+        assert database.exists();
         try {
             Scanner s = new Scanner(database);
             ArrayList<Task> tasks = new ArrayList<>();
