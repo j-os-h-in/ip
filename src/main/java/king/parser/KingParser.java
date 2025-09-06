@@ -96,22 +96,40 @@ public class KingParser {
      * @throws KingException If matching group is missing certain parts, throw IOError KingException.
      */
     public boolean checkParser(Commands command) throws KingException {
-        return switch (command) {
-            case HELP -> helpMatcher.matches();
-            case LIST -> listMatcher.matches();
-            case DUE -> checkDue();
-            case FIND -> checkFind();
-            case TODO -> checkTodo();
-            case DEADLINE -> checkDeadline();
-            case EVENT -> checkEvent();
-            case MARK -> checkMark();
-            case UNMARK -> checkUnmark();
-            case DELETE -> checkDelete();
-            case BYE -> endMatcher.matches();
-            default -> false;
-        };
+        switch (command) {
+        case HELP:
+            return helpMatcher.matches();
+        case LIST:
+            return listMatcher.matches();
+        case DUE:
+            return checkDue();
+        case FIND:
+            return checkFind();
+        case TODO:
+            return checkTodo();
+        case DEADLINE:
+            return checkDeadline();
+        case EVENT:
+            return checkEvent();
+        case MARK:
+            return checkMark();
+        case UNMARK:
+            return checkUnmark();
+        case DELETE:
+            return checkDelete();
+        case BYE:
+            return endMatcher.matches();
+        default:
+            return false;
+        }
     }
 
+    /**
+     * Checks if command matches due command or missing deadline
+     *
+     * @return True if match due command
+     * @throws KingException If matching group is missing certain parts, throw IOError KingException.
+     */
     private boolean checkDue() throws KingException {
         if (!dueMatcher.matches()) {
             return false;
