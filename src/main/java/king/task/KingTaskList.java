@@ -61,6 +61,7 @@ public class KingTaskList {
      * @return Task at index
      */
     public Task getTask(int idx) {
+        assert tasks != null;
         return tasks.get(idx);
     }
 
@@ -70,6 +71,7 @@ public class KingTaskList {
      * @param idx Index to get task
      */
     public void markDone(int idx) {
+        assert tasks != null;
         tasks.get(idx).markDone();
         kingStorage.markDone(idx);
     }
@@ -80,6 +82,7 @@ public class KingTaskList {
      * @param idx Index to get task
      */
     public void unmarkDone(int idx) {
+        assert tasks != null;
         tasks.get(idx).unmarkDone();
         kingStorage.unmarkDone(idx);
     }
@@ -90,6 +93,7 @@ public class KingTaskList {
      * @param idx Index to get task
      */
     public Task deleteTask(int idx) {
+        assert tasks != null;
         Task deletedTask = tasks.remove(idx);
         kingStorage.remove(idx);
         return deletedTask;
@@ -99,6 +103,7 @@ public class KingTaskList {
      * Resets the task list in the database and array
      */
     private void resetList() {
+        assert tasks != null;
         tasks.clear();
         kingStorage.resetFile();
     }
@@ -109,6 +114,7 @@ public class KingTaskList {
      * @return Size of task list
      */
     public int getSize() {
+        assert tasks != null;
         return tasks.size();
     }
 }

@@ -16,7 +16,7 @@ public class Deadline extends Task {
      * If no deadline is provided, throws a missing deadline exception.
      *
      * @param description Description of the task.
-     * @param by          king.task.Deadline of the task.
+     * @param by          Deadline of the task.
      * @throws KingException Error in creation of task.
      */
     public Deadline(String description, LocalDate by) throws KingException {
